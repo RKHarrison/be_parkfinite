@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
-from .database import Base
+from database import Base
 
 class Campsite(Base):
     __tablename__ = "campsites"
@@ -20,3 +20,4 @@ class CampsitePhoto(Base):
     campsite_photo_url = Column(String)
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
 
+    photos = relationship("Campsite", back_populates="campsite_photos")

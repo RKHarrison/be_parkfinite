@@ -27,7 +27,7 @@ class Campsite(CampsiteBase):
     campsite_name: str
     campsite_longitude: float
     campsite_latitude: float
-    photos: list[CampsitePhoto] = []
+    photos: list[CampsitePhoto] = [] 
 
     class Config: 
         orm_mode = True
