@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 from sqlalchemy.pool import StaticPool
 from sqlalchemy.orm import sessionmaker
 
-TEST_DB_URL = "sqlite:///./test2.db"
+TEST_DB_URL = "sqlite:///./test.db"
 test_engine = create_engine(
     TEST_DB_URL,
     connect_args={"check_same_thread": False},
