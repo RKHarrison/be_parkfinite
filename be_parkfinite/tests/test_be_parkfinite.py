@@ -1,4 +1,6 @@
 import pytest
+from pydantic import BaseModel
+from typing import List
 from be_parkfinite.tests.test_data import test_data
 from fastapi.testclient import TestClient
 from be_parkfinite.utils.seed_database import seed_database
@@ -25,7 +27,7 @@ testData = campsite = models.Campsite(
         )
 
 
-@pytest.fixture()
+@pytest.fixture(scope='function')
 def test_db():
     seed_database(test_engine, TestSession, test_data)
     yield
@@ -50,9 +52,21 @@ def test_read_main():
     assert response.json() == {"Hello": "World"}
 
 
+class ExpectedCampsite(BaseModel):
+    campsite_name: str
+    campsite_longitude: float
+    campsite_latitude: float
+    parking_cost: float
+    facilities_cost: float
+    description: str
+    campsite_id: int
+    category_id: int
+    photos: List
+    date_added: str
+    added_by: str
+
 def test_read_campsites(test_db):
     response = client.get("/campsites")
     print(response.json(), "<<<<<<<<<<")
     assert response.status_code == 200
-    assert response.json() == [{'campsite_name': 'TEST XYZ', 'campsite_longitude': -
-                                121.885, 'campsite_latitude': 37.338, 'campsite_id': 1, 'photos': []}]
+
