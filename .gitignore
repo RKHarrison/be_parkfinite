@@ -1,3 +1,4 @@
 venv/
-sql_app.db
+test.db
+dev.db
 __pycache__/
