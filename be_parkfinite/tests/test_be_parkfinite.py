@@ -1,4 +1,5 @@
 import pytest
+from be_parkfinite.tests.test_data import test_data
 from fastapi.testclient import TestClient
 from be_parkfinite.utils.seed_database import seed_database
 from be_parkfinite.main import app, get_db
@@ -19,13 +20,14 @@ TestSession = sessionmaker(
 testData = campsite = models.Campsite(
             campsite_name="TEST XYZ",
             campsite_longitude=-121.885,
-            campsite_latitude=37.338
+            campsite_latitude=37.338,
+            parking_cost=10.1
         )
 
 
 @pytest.fixture()
 def test_db():
-    seed_database(test_engine, TestSession, testData)
+    seed_database(test_engine, TestSession, test_data)
     yield
 
 def override_get_db():

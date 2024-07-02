@@ -1,6 +1,7 @@
 from database import Base
 
 def seed_database(engine, session, data):
+    print(data, "<<<DATA")
     db = session()
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
