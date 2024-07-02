@@ -15,6 +15,7 @@ class Campsite(Base):
 
 class CampsitePhoto(Base):
     __tablename__ = "campsite_photos"
+    __table_args__ = {'extend_existing': True}
 
     campsite_photo_id = Column(Integer, primary_key=True)
     campsite_photo_url = Column(String)

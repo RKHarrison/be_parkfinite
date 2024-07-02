@@ -1,7 +1,7 @@
 #Create, Read, Update & Delete
 from sqlalchemy.orm import Session
 
-import models, schemas
+import models, schemas as schemas
 
 def get_campsites(db: Session, skip: int = 0, limit: int = 100):
     return db.query(models.Campsite).limit(limit).all()
