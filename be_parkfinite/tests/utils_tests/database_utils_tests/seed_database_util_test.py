@@ -2,7 +2,7 @@ import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
 from models import Base, Campsite, CampsitePhoto, CampsiteCategories
-from be_parkfinite.utils.databse_utils import seed_database
+from be_parkfinite.utils.database_utils import seed_database
 from be_parkfinite.tests.utils_tests.database_utils_tests.seed_database_test_data import get_empty_seed_test_data, get_single_item_seed_test_data, get_single_model_seed_test_data, get_complex_seed_test_data
 
 
@@ -12,7 +12,7 @@ def util_test_session():
     # Create an SQLAlchemy engine that points to a SQLite database file.
     util_test_engine = create_engine('sqlite:///./util_test.db', echo=True)
     # Create all tables.
-    Base.metadata.create_all(util_test_engine)
+    Base.metadata.create_all(bind=util_test_engine)
     # Create a new session.
     Session = sessionmaker(bind=util_test_engine)
     util_test_session = Session()
