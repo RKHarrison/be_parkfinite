@@ -1,4 +1,6 @@
 from pydantic import BaseModel
+from schemas.facility_schemas import Facility
+from schemas.activity_schemas import Activity
 
 class CampsitePhotoBase(BaseModel):
     campsite_photo_url: str
@@ -30,7 +32,6 @@ class CampsiteContact(CampsiteContactBase):
         from_attributes = True
         # orm_mode = True
 
-
 class CampsiteBase(BaseModel):
     campsite_name: str
     campsite_longitude: float
@@ -38,11 +39,12 @@ class CampsiteBase(BaseModel):
     parking_cost: float
     facilities_cost: float
     description: str
+    approved: bool = False
 
 class CampsiteCreate(CampsiteBase):
-    # facilities: list[Facilities] | None
-    # activities: list[Activities] | None
-    contacts: list[CampsiteContact] = []
+    facilities: list[Facility] | None = None
+    activities: list[Activity] | None = None
+    contacts: list[CampsiteContact] | None = None
     opening_month: str
     closing_month: str
 
@@ -55,7 +57,6 @@ class Campsite(CampsiteBase):
 
     class ConfigDict: 
         from_attributes = True
-        # orm_mode = True
 
 
 class CampsiteCategoryBase(BaseModel):
