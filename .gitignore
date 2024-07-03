@@ -1,4 +1,7 @@
 venv/
 test.db
 dev.db
+query_db.py
+query_db_output.txt
+output.txt
 __pycache__/
