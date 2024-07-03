@@ -1,4 +1,4 @@
-from database import SessionLocal, init_db, drop_db
+from database.database import SessionLocal, init_db, drop_db
 from utils.database_utils import seed_database
 from datetime import datetime
 from models import Campsite

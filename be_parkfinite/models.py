@@ -1,7 +1,7 @@
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
-from database import Base
+from database.database import Base
 
 class CampsiteCategories(Base):
     __tablename__ = "categories"
