@@ -1,5 +1,49 @@
 from pydantic import BaseModel
 
+class CampsiteActivityBase(BaseModel):
+    campsite_id: int
+    activity_id: int
+
+class CampsiteActivityCreate(CampsiteActivityBase):
+    pass
+
+class CampsiteActivity(CampsiteActivityBase):
+    campsite_activity_id: int
+
+
+class ActivityBase(BaseModel):
+    activity_name: str
+    activity_img_url: str
+
+class ActivityCreate(ActivityBase):
+    pass
+
+class Activity(ActivityBase):
+    activity_id: int
+
+
+class CampsiteFacilityBase(BaseModel):
+    campsite_id: int
+    facility_id: int
+
+class CampsiteFacilityCreate(CampsiteFacilityBase):
+    pass
+
+class CampsiteFacility(CampsiteFacilityBase):
+    campsite_facility_id: int
+
+
+class FacilityBase(BaseModel):
+    facility_name: str
+    facility_img_url: str
+
+class FacilityCreate(FacilityBase):
+    pass
+
+class Facility(FacilityBase):
+    facility_id: int
+   
+
 class CampsitePhotoBase(BaseModel):
     campsite_photo_url: str
 
@@ -30,6 +74,7 @@ class CampsiteContact(CampsiteContactBase):
         from_attributes = True
         # orm_mode = True
 
+
 class CampsiteBase(BaseModel):
     campsite_name: str
     campsite_longitude: float
@@ -37,7 +82,6 @@ class CampsiteBase(BaseModel):
     parking_cost: float
     facilities_cost: float
     description: str
-
 
 class CampsiteCreate(CampsiteBase):
     # facilities: list[Facilities] | None

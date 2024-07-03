@@ -3,7 +3,7 @@ from sqlalchemy.orm import relationship
 
 from database.database import Base
 
-class CampsiteCategories(Base):
+class CampsiteCategory(Base):
     __tablename__ = "categories"
 
     category_id = Column(Integer, primary_key=True)
@@ -28,7 +28,7 @@ class Campsite(Base):
     added_by = Column(String)
 
     campsite_photos = relationship("CampsitePhoto", back_populates="photos")
-    campsite_contacts = relationship("CampsiteContacts", back_populates="contacts")
+    campsite_contacts = relationship("CampsiteContact", back_populates="contacts")
 
 class CampsitePhoto(Base):
     __tablename__ = "campsite_photos"
@@ -39,7 +39,7 @@ class CampsitePhoto(Base):
 
     photos = relationship("Campsite", back_populates="campsite_photos")
 
-class CampsiteContacts(Base):
+class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
 
     campsite_contact_id = Column(Integer, primary_key=True)
@@ -49,3 +49,34 @@ class CampsiteContacts(Base):
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
 
     contacts = relationship("Campsite", back_populates="campsite_contacts")
+
+class Facility(Base):
+    __tablename__ = "facilities"
+
+    facility_id = Column(Integer, primary_key=True)
+    facility_name = Column(String)
+    facility_img_url = Column(String)
+
+class CampsiteFacility(Base):
+    __tablename__ = 'campsite_facilities'
+
+    campsite_facility_id = Column(Integer, primary_key=True)
+    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
+    facility_id = Column(Integer, ForeignKey("facilities.facility_id"))
+
+class Activity(Base):
+    __tablename__ = "activities"
+
+    activity_id = Column(Integer,primary_key=True)
+    activity_name = Column(String)
+    activity_img_url = Column(String)
+
+class CampsiteActivity(Base):
+    __tablename__ = 'campsite_activities'
+
+    campsite_activity_id = Column(Integer, primary_key=True)
+    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
+    activity_id = Column(Integer, ForeignKey("activities.activity_id"))
+
+
+
