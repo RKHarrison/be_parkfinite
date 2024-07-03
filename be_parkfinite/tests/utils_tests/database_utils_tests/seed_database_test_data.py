@@ -1,5 +1,5 @@
 from datetime import datetime
-from models import Campsite, CampsitePhoto, CampsiteCategories
+from models import Campsite, CampsitePhoto, CampsiteCategory
 
 def get_empty_seed_test_data(): 
     return {
@@ -102,12 +102,12 @@ def get_complex_seed_test_data():
             )
         ],
         'campsite_category': [
-            CampsiteCategories(
+            CampsiteCategory(
                 category_id=1,
                 category_name="Mountain",
                 category_image_url="https://example.com/category1.jpg"
             ),
-            CampsiteCategories(
+            CampsiteCategory(
                 category_id=2,
                 category_name="Beach",
                 category_image_url="https://example.com/category2.jpg"
