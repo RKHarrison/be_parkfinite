@@ -1,33 +1,39 @@
-from database import Base, SessionLocal, engine
-from utils.seed_database import seed_database
-import sys
-import models
+from database import SessionLocal, init_db, drop_db
+from utils.database_utils import seed_database
+from datetime import datetime
+from models import Campsite
 
-dev_data = models.Campsite(
-            campsite_name="McCampface",
-            campsite_longitude=-121.885,
-            campsite_latitude=37.338
+dev_data = {
+    'campsite': [
+        Campsite(
+            campsite_name="Campy McCampsface",
+            campsite_longitude=-117.123,
+            campsite_latitude=32.715,
+            parking_cost=15.00,
+            facilities_cost=5.00,
+            description="A lovely spot for sunset views",
+            date_added=datetime.now().isoformat(),
+            added_by="Us",
+            category_id=1
         )
-
-seed_database(engine, SessionLocal, dev_data)
-print("dev database seeded")
-
+    ]
+}
 
 
+def run_seed():
+    drop_db()
+    init_db()
+    session = SessionLocal()
+
+    try:
+        seed_database(session, dev_data)
+    except Exception as e:
+        session.rollback()
+        print(f"Seeding failed: {e}")
+    finally:
+        session.close()
+        print("database seeded")
 
 
-
-
-
-#CONDITIONAL SEEDING FOR MIGRATING TOM PRODUCTION DATABSE
-# if __name__ == "__main__":
-#     if len(sys.argv) < 2:
-#         print("Usage: python seed.py [dev|test]")
-#     else:
-#         env = sys.argv[1]
-#         if env == 'dev':
-#             print("seeding " + env)
-#             seed_database(engine, SessionLocal, dev_data)
-#         # elif env == 'prod':
-#         #     print("seeding " + env)
-#         #     seed_database("postgresql://user:password@postgresserver/db")
+if __name__ == "__main__":
+    run_seed()
