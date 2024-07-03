@@ -1,5 +1,5 @@
 from datetime import datetime
-from models import Campsite, CampsitePhoto, CampsiteContacts, CampsiteCategories
+from be_parkfinite.models.campsite_models import Campsite, CampsitePhoto, CampsiteContact, CampsiteCategory
 
 def get_test_data():
 
@@ -9,7 +9,7 @@ def get_test_data():
         campsite_photo_url="https://example.com/photo1.jpg"
     )]
 
-    test_campsite_contact_data = [CampsiteContacts(
+    test_campsite_contact_data = [CampsiteContact(
         campsite_contact_id=1,
         campsite_id=1,
         campsite_contact_name="John Doe",
@@ -30,7 +30,7 @@ def get_test_data():
         added_by="Admin"
     )]
 
-    test_campsite_category_data = [CampsiteCategories(
+    test_campsite_category_data = [CampsiteCategory(
         category_id=1,
         category_name="Mountain",
         category_image_url="https://example.com/category1.jpg"

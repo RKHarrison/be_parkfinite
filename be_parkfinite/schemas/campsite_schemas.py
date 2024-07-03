@@ -30,6 +30,7 @@ class CampsiteContact(CampsiteContactBase):
         from_attributes = True
         # orm_mode = True
 
+
 class CampsiteBase(BaseModel):
     campsite_name: str
     campsite_longitude: float
@@ -37,7 +38,6 @@ class CampsiteBase(BaseModel):
     parking_cost: float
     facilities_cost: float
     description: str
-
 
 class CampsiteCreate(CampsiteBase):
     # facilities: list[Facilities] | None

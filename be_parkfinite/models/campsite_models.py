@@ -1,9 +1,9 @@
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
-from database import Base
+from database.database import Base
 
-class CampsiteCategories(Base):
+class CampsiteCategory(Base):
     __tablename__ = "categories"
 
     category_id = Column(Integer, primary_key=True)
@@ -28,7 +28,7 @@ class Campsite(Base):
     added_by = Column(String)
 
     campsite_photos = relationship("CampsitePhoto", back_populates="photos")
-    campsite_contacts = relationship("CampsiteContacts", back_populates="contacts")
+    campsite_contacts = relationship("CampsiteContact", back_populates="contacts")
 
 class CampsitePhoto(Base):
     __tablename__ = "campsite_photos"
@@ -39,7 +39,7 @@ class CampsitePhoto(Base):
 
     photos = relationship("Campsite", back_populates="campsite_photos")
 
-class CampsiteContacts(Base):
+class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
 
     campsite_contact_id = Column(Integer, primary_key=True)
