@@ -22,9 +22,10 @@ def root():
 
 
 @app.get("/campsites", response_model=list[Campsite])
-def read_campsites(skip: int = 0, limit: int = 5, db: Session = Depends(get_db)):
+def read_campsites(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)):
     campsites = get_campsites(db, skip=skip, limit=limit)
     return campsites
+
 
 @app.post("/campsites", response_model=Campsite)
 def create_campsite(campsite: CampsiteCreate, db: Session = Depends(get_db)):
