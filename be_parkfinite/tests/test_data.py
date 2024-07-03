@@ -1,5 +1,5 @@
 from datetime import datetime
-from models import Campsite, CampsitePhoto, CampsiteContact, CampsiteCategory
+from be_parkfinite.models.campsite_models import Campsite, CampsitePhoto, CampsiteContact, CampsiteCategory
 
 def get_test_data():
 

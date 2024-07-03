@@ -1,5 +1,5 @@
 from datetime import datetime
-from models import Campsite, CampsitePhoto, CampsiteCategory
+from be_parkfinite.models.campsite_models import Campsite, CampsitePhoto, CampsiteCategory
 
 def get_empty_seed_test_data(): 
     return {

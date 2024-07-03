@@ -1,7 +1,7 @@
 import pytest
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker
-from models import Base, Campsite, CampsitePhoto, CampsiteCategory
+from be_parkfinite.models.campsite_models import Base, Campsite, CampsitePhoto, CampsiteCategory
 from be_parkfinite.utils.database_utils import seed_database
 from be_parkfinite.tests.utils_tests.database_utils_tests.seed_database_test_data import get_empty_seed_test_data, get_single_item_seed_test_data, get_single_model_seed_test_data, get_complex_seed_test_data
 

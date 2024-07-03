@@ -5,7 +5,7 @@ from sqlalchemy.orm import sessionmaker
 import pytest
 from fastapi.testclient import TestClient
 
-from models import Base
+from database.database import Base
 from be_parkfinite.main import app, get_db
 from be_parkfinite.tests.test_data import get_test_data
 from be_parkfinite.utils.database_utils import seed_database
