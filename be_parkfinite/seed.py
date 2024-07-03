@@ -1,7 +1,7 @@
 from database.database import SessionLocal, init_db, drop_db
 from utils.database_utils import seed_database
 from datetime import datetime
-from models import Campsite
+from models.campsite_models import Campsite
 
 dev_data = {
     'campsite': [

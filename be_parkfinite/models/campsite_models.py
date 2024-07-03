@@ -49,34 +49,3 @@ class CampsiteContact(Base):
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
 
     contacts = relationship("Campsite", back_populates="campsite_contacts")
-
-class Facility(Base):
-    __tablename__ = "facilities"
-
-    facility_id = Column(Integer, primary_key=True)
-    facility_name = Column(String)
-    facility_img_url = Column(String)
-
-class CampsiteFacility(Base):
-    __tablename__ = 'campsite_facilities'
-
-    campsite_facility_id = Column(Integer, primary_key=True)
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-    facility_id = Column(Integer, ForeignKey("facilities.facility_id"))
-
-class Activity(Base):
-    __tablename__ = "activities"
-
-    activity_id = Column(Integer,primary_key=True)
-    activity_name = Column(String)
-    activity_img_url = Column(String)
-
-class CampsiteActivity(Base):
-    __tablename__ = 'campsite_activities'
-
-    campsite_activity_id = Column(Integer, primary_key=True)
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-    activity_id = Column(Integer, ForeignKey("activities.activity_id"))
-
-
-

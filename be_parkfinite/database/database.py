@@ -1,7 +1,7 @@
 from sqlalchemy import create_engine, MetaData
 from sqlalchemy.orm import sessionmaker, declarative_base
 
-DEV_DATABASE_URL = "sqlite:///dev.db"
+DEV_DATABASE_URL = "sqlite:///../dev.db"
 
 engine = create_engine(
     DEV_DATABASE_URL, connect_args={"check_same_thread": False}
