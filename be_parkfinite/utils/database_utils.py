@@ -1,5 +1,3 @@
-from database import Base
-
 def seed_database(db, data):
         for table_model in data.values():
             for row in table_model:
