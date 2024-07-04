@@ -1,5 +1,7 @@
 from fastapi import Depends, FastAPI, HTTPException
 from sqlalchemy.orm import Session
+import uvicorn
+from os import getenv
 
 from crud.campsite_crud import get_campsites, create_campsite
 from schemas.campsite_schemas import Campsite, CampsiteCreate
@@ -30,3 +32,7 @@ def read_campsites(skip: int = 0, limit: int = 20, db: Session = Depends(get_db)
 @app.post("/campsites", response_model=Campsite)
 def create_campsite(campsite: CampsiteCreate, db: Session = Depends(get_db)):
     return create_campsite(db=db, campsite=campsite)
+
+if __name__ == "__main__":
+    PORT = int(getenv('PORT', 8000))
+    uvicorn.run("main:app", host="0.0.0.0", port=PORT, reload=True)
