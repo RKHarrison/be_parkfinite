@@ -17,5 +17,5 @@ class UserCampsite(Base):
     __tablename__ = "user_campsites"
 
     user_campsite_id = Column(Integer, primary_key=True)
-    user_id = Column(Integer, ForeignKey("users.user_id"))
+    username = Column(String, ForeignKey("users.username"))
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
