@@ -19,7 +19,7 @@ class User(UserBase):
 
 
 class UserCampsiteBase(BaseModel):
-    user_id = int
+    username = str
     campsite_id = int
 
 class CreateUserCampsite(UserCampsiteBase):
