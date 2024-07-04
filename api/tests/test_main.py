@@ -56,17 +56,33 @@ def test_read_main():
 def test_read_campsites(test_db):
     response = client.get("/campsites")
     assert response.status_code == 200
-
     response_data = response.json()
+
     assert len(response_data) == 3
     for campsite in response_data:
         assert isinstance(campsite['campsite_name'], str)
-        assert isinstance(campsite['description'], str)
+        assert isinstance(campsite['campsite_id'], int)
+        assert is_valid_date(campsite['date_added'])
         assert isinstance(campsite['added_by'], str)
         assert isinstance(campsite['campsite_longitude'], float)
         assert isinstance(campsite['campsite_latitude'], float)
-        assert isinstance(campsite['campsite_id'], int)
-        assert isinstance(campsite['category_id'], int)
+        assert isinstance(campsite['category']['category_name'], str)
+        assert isinstance(campsite['category']['category_img_url'], str)
         assert isinstance(campsite['photos'], list)
-        assert isinstance(campsite['date_added'], str)
-        assert is_valid_date(campsite['date_added'])
+        assert isinstance(campsite['parking_cost'], (float, type(None)))
+        assert isinstance(campsite['facilities_cost'], (float, type(None)))
+        assert isinstance(campsite['description'], str)
+        assert isinstance(campsite['approved'], bool)
+        assert isinstance(campsite['contact'], list)
+
+        for photo in campsite['photos']:
+                assert isinstance(photo['campsite_photo_url'], str)
+                assert isinstance(photo['campsite_photo_id'], int)
+                assert isinstance(photo['campsite_id'], int)
+
+        for detail in campsite['contact']:
+            assert isinstance(detail['campsite_contact_name'], str)
+            assert isinstance(detail['campsite_contact_phone'], str)
+            assert isinstance(detail['campsite_contact_email'], (str, type(None)))
+            assert isinstance(detail['campsite_contact_id'], int)
+            assert isinstance(detail['campsite_id'], int)
