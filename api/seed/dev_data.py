@@ -11,15 +11,15 @@ def get_dev_data():
     return {
         'campsite_category': [
             CampsiteCategory(category_name="In The Wild",
-                             category_image_url="https://example.com/category1.jpg"),
+                             category_img_url="https://example.com/category1.jpg"),
             CampsiteCategory(category_name="Car Park",
-                             category_image_url="https://example.com/category2.jpg"),
+                             category_img_url="https://example.com/category2.jpg"),
             CampsiteCategory(category_name="Car Park - Daytime Only",
-                             category_image_url="https://example.com/category3.jpg"),
+                             category_img_url="https://example.com/category3.jpg"),
             CampsiteCategory(category_name="Campsite",
-                             category_image_url="https://example.com/category4.jpg"),
+                             category_img_url="https://example.com/category4.jpg"),
             CampsiteCategory(category_name="Free Motorhome Area",
-                             category_image_url="https://example.com/category5.jpg")
+                             category_img_url="https://example.com/category5.jpg")
         ],
         'facility': [
             Facility(facility_name="Wi-Fi",
@@ -90,7 +90,18 @@ def get_dev_data():
         ],
         'campsite_contact': [
             CampsiteContact(campsite_contact_id=1, campsite_id=1, campsite_contact_name="John Doe", campsite_contact_phone="123-456-7890"),
-            CampsiteContact(campsite_contact_id=2, campsite_id=2, campsite_contact_name="Jane Doe", campsite_contact_phone="987-654-3210")
+            CampsiteContact(campsite_contact_id=2, campsite_id=2, campsite_contact_name="Jane Doe", campsite_contact_phone="987-654-3210"),
+            CampsiteContact(campsite_contact_id=3, campsite_id=3, campsite_contact_name="Alice Smith", campsite_contact_phone="111-222-3333", campsite_contact_email="alice.smith@example.com"),
+            CampsiteContact(campsite_contact_id=4, campsite_id=4, campsite_contact_name="Bob Johnson", campsite_contact_phone="444-555-6666", campsite_contact_email="bob.johnson@example.com"),
+            CampsiteContact(campsite_contact_id=5, campsite_id=5, campsite_contact_name="Charlie Brown", campsite_contact_phone="777-888-9999", campsite_contact_email="charlie.brown@example.com"),
+            CampsiteContact(campsite_contact_id=6, campsite_id=6, campsite_contact_name="Diana Prince", campsite_contact_phone="000-111-2222", campsite_contact_email="diana.prince@example.com"),
+            CampsiteContact(campsite_contact_id=7, campsite_id=7, campsite_contact_name="Edward King", campsite_contact_phone="333-444-5555", campsite_contact_email="edward.king@example.com"),
+            CampsiteContact(campsite_contact_id=8, campsite_id=8, campsite_contact_name="Fiona Queen", campsite_contact_phone="666-777-8888", campsite_contact_email="fiona.queen@example.com"),
+            CampsiteContact(campsite_contact_id=9, campsite_id=9, campsite_contact_name="George Knight", campsite_contact_phone="999-000-1111", campsite_contact_email="george.knight@example.com"),
+            CampsiteContact(campsite_contact_id=10, campsite_id=10, campsite_contact_name="Hannah White", campsite_contact_phone="222-333-4444", campsite_contact_email="hannah.white@example.com"),
+            CampsiteContact(campsite_contact_id=11, campsite_id=11, campsite_contact_name="Ivy Green", campsite_contact_phone="555-666-7777", campsite_contact_email="ivy.green@example.com"),
+            CampsiteContact(campsite_contact_id=12, campsite_id=12, campsite_contact_name="Jack Black", campsite_contact_phone="888-999-0000", campsite_contact_email="jack.black@example.com"),
+            CampsiteContact(campsite_contact_id=13, campsite_id=13, campsite_contact_name="Karen Blue", campsite_contact_phone="123-321-4567", campsite_contact_email="karen.blue@example.com")
         ],
         'user': [
             User(username="NatureExplorer", user_password="secure123", user_firstname="Alice", user_lastname="Wanderlust", user_email="alice@example.com", xp=500, user_type="NORMAL", camera_permission=True),
