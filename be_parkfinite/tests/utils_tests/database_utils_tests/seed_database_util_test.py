@@ -67,32 +67,24 @@ def test_seed_database_with_multiple_items_single_model(util_test_session):
 
 
 def test_seed_database_with_complex_data(util_test_session):
-    # Arrange
     complex_data = get_complex_seed_test_data()
-    # Act
     seed_database(util_test_session, complex_data)
-    # Assert Campsites
+
     all_campsites = util_test_session.query(Campsite).all()
     assert len(all_campsites) == 2
-    # Assert CampsitePhoto
     all_photos = util_test_session.query(CampsitePhoto).all()
     assert len(all_photos) == 2
-    # Assert CampsiteCategories
     all_categories = util_test_session.query(CampsiteCategory).all()
     assert len(all_categories) == 2
 
 def test_seed_database_with_complete_data(util_test_session):
-        # Arrange
     complex_data = get_complete_seed_test_data()
-    # Act
     seed_database(util_test_session, complex_data)
-    # Assert Campsites
+
     all_campsites = util_test_session.query(Campsite).all()
     assert len(all_campsites) == 3
-    # Assert CampsitePhoto
     all_photos = util_test_session.query(CampsitePhoto).all()
     assert len(all_photos) == 3
-    # Assert CampsiteCategories
     all_categories = util_test_session.query(CampsiteCategory).all()
     assert len(all_categories) == 3
     all_contacts = util_test_session.query(CampsiteContact).all()
