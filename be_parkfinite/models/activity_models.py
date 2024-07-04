@@ -1,3 +1,4 @@
+from database.database import Base
 from sqlalchemy import Column, Integer, String, ForeignKey
 
 class Activity(Base):

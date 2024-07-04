@@ -1,7 +1,7 @@
+from database.database import Base
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
 
-from database.database import Base
 
 class CampsiteCategory(Base):
     __tablename__ = "categories"
@@ -20,12 +20,12 @@ class Campsite(Base):
     campsite_latitude = Column(Float)
     parking_cost = Column(Float)
     facilities_cost = Column(Float)
-    # average_rating = Column(Float)
     opening_month = Column(String)
     closing_month = Column(String)
     description = Column(String)
     date_added = Column(String)
     added_by = Column(String)
+    approved = Column(Boolean, default=False)
 
     campsite_photos = relationship("CampsitePhoto", back_populates="photos")
     campsite_contacts = relationship("CampsiteContact", back_populates="contacts")

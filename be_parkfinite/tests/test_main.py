@@ -58,7 +58,7 @@ def test_read_campsites(test_db):
     assert response.status_code == 200
 
     response_data = response.json()
-    assert len(response_data) == 1
+    assert len(response_data) == 3
     for campsite in response_data:
         assert isinstance(campsite['campsite_name'], str)
         assert isinstance(campsite['description'], str)
