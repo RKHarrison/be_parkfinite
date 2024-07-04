@@ -3,5 +3,5 @@ test.db
 dev.db
 query_db.py
 query_db_output.txt
-output.txt
+.env*
 __pycache__/
