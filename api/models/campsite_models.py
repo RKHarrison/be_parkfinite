@@ -1,21 +1,21 @@
 from database.database import Base
+from typing import List
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey
 from sqlalchemy.orm import relationship
+from sqlalchemy.orm import Mapped, mapped_column 
 
 
 class CampsiteCategory(Base):
     __tablename__ = "categories"
-
     category_id = Column(Integer, primary_key=True)
-    category_image_url = Column(String)
+    category_img_url = Column(String)
     category_name = Column(String)
+
 
 class Campsite(Base):
     __tablename__ = "campsites"
-
     campsite_id = Column(Integer, primary_key=True)
     campsite_name = Column(String, index=True)
-    category_id = Column(Integer, ForeignKey("categories.category_id"))
     campsite_longitude = Column(Float)
     campsite_latitude = Column(Float)
     parking_cost = Column(Float)
@@ -27,25 +27,30 @@ class Campsite(Base):
     added_by = Column(String)
     approved = Column(Boolean, default=False)
 
-    campsite_photos = relationship("CampsitePhoto", back_populates="photos")
-    campsite_contacts = relationship("CampsiteContact", back_populates="contacts")
+    category_id = Column(Integer, ForeignKey("categories.category_id"))
+    category = relationship("CampsiteCategory")
 
-class CampsitePhoto(Base):
-    __tablename__ = "campsite_photos"
+    contact: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite")
+    photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite")
 
-    campsite_photo_id = Column(Integer, primary_key=True)
-    campsite_photo_url = Column(String)
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-
-    photos = relationship("Campsite", back_populates="campsite_photos")
 
 class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
-
     campsite_contact_id = Column(Integer, primary_key=True)
     campsite_contact_name = Column(String)
     campsite_contact_phone = Column(String)
     campsite_contact_email = Column(String)
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
 
-    contacts = relationship("Campsite", back_populates="campsite_contacts")
+    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
+    campsite: Mapped["Campsite"] = relationship("Campsite", back_populates="contact")
+
+
+class CampsitePhoto(Base):
+    __tablename__ = "campsite_photos"
+    campsite_photo_id = Column(Integer, primary_key=True)
+    campsite_photo_url = Column(String)
+
+    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
+    campsite: Mapped["Campsite"] = relationship("Campsite", back_populates="photos")
+
+
