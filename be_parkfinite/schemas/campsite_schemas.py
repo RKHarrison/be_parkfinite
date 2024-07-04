@@ -14,8 +14,6 @@ class CampsitePhoto(CampsitePhotoBase):
 
     class ConfigDict:
         from_attributes = True
-        # orm_mode = True
-
 
 class CampsiteContactBase(BaseModel):
     campsite_contact_name: str
@@ -30,7 +28,6 @@ class CampsiteContact(CampsiteContactBase):
 
     class ConfigDict: 
         from_attributes = True
-        # orm_mode = True
 
 class CampsiteBase(BaseModel):
     campsite_name: str

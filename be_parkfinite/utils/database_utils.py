@@ -39,7 +39,6 @@ def seed_reviews(session, reviews):
     session.commit()
 
 def seed_database(session, data):
-    print(data)
     if 'campsite_category' in data:
         seed_categories(session, data['campsite_category'])
     if 'facility' in data:

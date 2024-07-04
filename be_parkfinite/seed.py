@@ -1,7 +1,5 @@
 from database.database import SessionLocal, init_db, drop_db
 from utils.database_utils import seed_database
-from datetime import datetime
-from models.campsite_models import Campsite
 from seed.dev_data import get_dev_data
 
 dev_data = get_dev_data()
