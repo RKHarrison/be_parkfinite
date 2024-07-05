@@ -3,7 +3,7 @@ from sqlalchemy.orm import Session
 import uvicorn
 from os import getenv
 
-from crud.campsite_crud import fetch_campsites, insert_campsite
+from crud.campsite_crud import create_campsite, read_campsites 
 from schemas.campsite_schemas import Campsite, CampsiteCreate
 from database.database import SessionLocal, engine, Base
 
@@ -24,8 +24,8 @@ def root():
 
 
 @app.get("/campsites", response_model=list[Campsite])
-def get_campsites(skip: int = 0, limit: int = 10, db: Session = Depends(get_db)):
-    return fetch_campsites(db, skip=skip, limit=limit)
+def get_campsites(skip: int = 0, limit: int = 30, db: Session = Depends(get_db)):
+    return read_campsites(db, skip=skip, limit=limit)
 
 
 
@@ -39,7 +39,7 @@ def get_campsites(skip: int = 0, limit: int = 10, db: Session = Depends(get_db))
 
 @app.post("/campsites", response_model=Campsite)
 def post_campsite(campsite: CampsiteCreate, db: Session = Depends(get_db)):
-    return insert_campsite(db=db, campsite=campsite)
+    return create_campsite(db=db, campsite=campsite)
 
 if __name__ == "__main__":
     PORT = int(getenv('PORT', 8000))
