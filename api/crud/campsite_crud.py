@@ -1,15 +1,19 @@
 #Create, Read, Update & Delete
-from sqlalchemy.orm import Session
+from sqlalchemy.orm import Session, joinedload, selectinload
 
 from api.models.campsite_models import Campsite
 from schemas.campsite_schemas import CampsiteCreate
 
-def get_campsites(db: Session, skip: int = 0, limit: int = 100):
-    return db.query(Campsite).limit(limit).all()
+def fetch_campsites(db: Session, skip: int = 0, limit: int = 10):
+    campsites = db.query(Campsite).limit(limit).all()
+    return campsites
 
-def create_campsite(db: Session, campsite: CampsiteCreate):
+
+
+
+
+def insert_campsite(db: Session, campsite: CampsiteCreate):
     db_campsite = Campsite(
-        # campsite_id = campsite.campsite_id,
         campsite_name = campsite.campsite_name,
         campsite_longitude = campsite.campsite_longitude,
         campsite_latitude = campsite.campsite_longitude

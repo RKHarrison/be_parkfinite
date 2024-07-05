@@ -15,42 +15,19 @@ class CampsitePhoto(CampsitePhotoBase):
     class ConfigDict:
         from_attributes = True
 
+
 class CampsiteContactBase(BaseModel):
     campsite_contact_name: str
     campsite_contact_phone: str
+    
 
 class CampsiteContactCreate(CampsiteContactBase):
-    campsite_contact_email: str
+    campsite_contact_email: str | None = None
 
 class CampsiteContact(CampsiteContactBase):
+    campsite_contact_email: str | None = None
     campsite_contact_id: int
     campsite_id: int
-
-    class ConfigDict: 
-        from_attributes = True
-
-class CampsiteBase(BaseModel):
-    campsite_name: str
-    campsite_longitude: float
-    campsite_latitude: float
-    parking_cost: float
-    facilities_cost: float
-    description: str
-    approved: bool = False
-
-class CampsiteCreate(CampsiteBase):
-    facilities: list[Facility] | None = None
-    activities: list[Activity] | None = None
-    contacts: list[CampsiteContact] | None = None
-    opening_month: str
-    closing_month: str
-
-class Campsite(CampsiteBase):
-    campsite_id: int
-    category_id: int
-    photos: list[CampsitePhoto] = []
-    date_added: str
-    added_by: str
 
     class ConfigDict: 
         from_attributes = True
@@ -58,10 +35,38 @@ class Campsite(CampsiteBase):
 
 class CampsiteCategoryBase(BaseModel):
     category_name: str
-    category_image_url: str
+    category_img_url: str
 
 class CampsiteCategoryCreate(CampsiteCategoryBase):
     pass
 
 class CampsiteCategory(CampsiteCategoryBase):
-    category_id: int
+    pass
+
+
+class CampsiteBase(BaseModel):
+    campsite_name: str
+    campsite_id: int
+    date_added: str
+    added_by: str
+    campsite_longitude: float
+    campsite_latitude: float
+    category: CampsiteCategory
+    photos: list[CampsitePhoto] = []
+    contact: list[CampsiteContact] = []
+    parking_cost: float | None = None
+    facilities_cost: float | None = None
+    description: str
+
+class CampsiteCreate(CampsiteBase):
+    facilities: list[Facility] | None = None
+    activities: list[Activity] | None = None
+    opening_month: str | None = None
+    closing_month: str | None = None
+
+class Campsite(CampsiteBase):
+    campsite_id: int
+    approved: bool = False
+
+    class ConfigDict: 
+        from_attributes = True

@@ -109,12 +109,12 @@ def get_complex_seed_test_data():
             CampsiteCategory(
                 category_id=1,
                 category_name="Mountain",
-                category_image_url="https://example.com/category1.jpg"
+                category_img_url="https://example.com/category1.jpg"
             ),
             CampsiteCategory(
                 category_id=2,
                 category_name="Beach",
-                category_image_url="https://example.com/category2.jpg"
+                category_img_url="https://example.com/category2.jpg"
             )
         ]
     }
@@ -122,9 +122,9 @@ def get_complex_seed_test_data():
 def get_complete_seed_test_data():
     return {
         'campsite_category': [
-            CampsiteCategory(category_name="In The Wild", category_image_url="https://example.com/category1.jpg"),
-            CampsiteCategory(category_name="Car Park", category_image_url="https://example.com/category2.jpg"),
-            CampsiteCategory(category_name="Campsite", category_image_url="https://example.com/category4.jpg")
+            CampsiteCategory(category_name="In The Wild", category_img_url="https://example.com/category1.jpg"),
+            CampsiteCategory(category_name="Car Park", category_img_url="https://example.com/category2.jpg"),
+            CampsiteCategory(category_name="Campsite", category_img_url="https://example.com/category4.jpg")
         ],
         'facility': [
             Facility(facility_name="Wi-Fi", facility_img_url="https://example.com/facility1.jpg"),
