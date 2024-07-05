@@ -1,5 +1,6 @@
 fastapi==0.111.0
 fastapi-cli==0.0.4
+psycopg2==2.9.9
 pydantic==2.7.4
 pydantic-settings==2.3.4
 pydantic_core==2.18.4
