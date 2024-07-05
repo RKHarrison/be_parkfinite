@@ -56,10 +56,10 @@ def test_read_main():
 def test_read_campsites(test_db):
     response = client.get("/campsites")
     assert response.status_code == 200
-    response_data = response.json()
+    campsites = response.json()
 
-    assert len(response_data) == 3
-    for campsite in response_data:
+    assert len(campsites) == 3
+    for campsite in campsites:
         assert isinstance(campsite['campsite_name'], str)
         assert isinstance(campsite['campsite_id'], int)
         assert is_valid_date(campsite['date_added'])
