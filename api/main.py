@@ -4,7 +4,10 @@ import uvicorn
 from os import getenv
 
 from crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
+from api.crud.user_crud import read_users
 from schemas.campsite_schemas import CampsiteCreate, Campsite, CampsiteDetailed
+from api.schemas.user_schemas import User
+
 from database.database import SessionLocal, engine, Base
 
 Base.metadata.create_all(bind=engine)
@@ -32,6 +35,9 @@ def get_campsite_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
     return read_campsite_by_id(db, campsite_id)
 
 
+@app.get("/users", response_model=list[User])
+def get_users(db: Session = Depends(get_db)):
+    return read_users(db)
 
 
 
