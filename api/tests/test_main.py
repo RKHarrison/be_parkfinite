@@ -107,6 +107,16 @@ def test_read_campsites_by_campsite_id(test_db):
     assert contact['campsite_contact_id'] == 1
     assert contact['campsite_contact_name'] == "John Doe"
 
+def test_404_campsite_not_found(test_db):
+    response = client.get("/campsites/987654321")
+    assert response.status_code == 404
+
+    error = response.json()
+    assert error["detail"] == "404 - Campsite Not Found!"
+
+
+
+
 def test_read_users(test_db):
     response = client.get("/users")
     assert response.status_code == 200
