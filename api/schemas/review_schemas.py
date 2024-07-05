@@ -4,9 +4,13 @@ class ReviewBase(BaseModel):
     rating: int
     campsite_id: int
     username: str
-
-class CreateReview(ReviewBase):
     comment: str | None = None
 
+class CreateReview(ReviewBase):
+    pass
+
 class Review(ReviewBase):
-    review_id: str
+    review_id: int
+
+    class ConfigDict: 
+        from_attributes = True

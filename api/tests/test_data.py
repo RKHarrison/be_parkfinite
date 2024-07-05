@@ -37,8 +37,9 @@ def get_test_data():
         ],
         'review': [
             Review(rating=5, campsite_id=1, username="NatureExplorer", comment="Stunning location, completely serene. Can't wait to come back."),
-            Review(rating=5, campsite_id=2, username="PeakHiker92", comment="As a hiker, this place is a dream. Trails for all levels are accessible."),
-            Review(rating=5, campsite_id=3, username="ForestFanatic", comment="A forest haven. Quiet, peaceful, and beautifully green.")
+            Review(rating=5, campsite_id=1, username="PeakHiker92", comment="As a hiker, this place is a dream. Trails for all levels are accessible."),
+            Review(rating=5, campsite_id=1, username="ForestFanatic"),
+            Review(rating=2, campsite_id=2, username="ForestFanatic")
         ],
         'user': [
             User(username="NatureExplorer", user_password="secure123", user_firstname="Alice", user_lastname="Wanderlust", user_email="alice@example.com", xp=500, user_type="NORMAL", camera_permission=True),
