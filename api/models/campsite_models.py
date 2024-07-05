@@ -3,7 +3,6 @@ from typing import List
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped
 
-# from api.models.facility_models import Facility
 
 class CampsiteCategory(Base):
     __tablename__ = "categories"
@@ -40,14 +39,7 @@ class Campsite(Base):
 
     contact: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite")
     photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite")
-    facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities)
-
-class Facility(Base):
-    __tablename__ = "facilities"
-
-    facility_id = Column(Integer, primary_key=True)
-    facility_name = Column(String)
-    facility_img_url = Column(String)
+    # facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities, cascade="all, delete-orphan")
 
 class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
