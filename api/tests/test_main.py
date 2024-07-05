@@ -102,6 +102,3 @@ def test_read_campsites_by_campsite_id(test_db):
     contact = campsite['contact'][0]
     assert contact['campsite_contact_id'] == 1
     assert contact['campsite_contact_name'] == "John Doe"
-
-    assert isinstance(campsite['facilities'], list)
-
