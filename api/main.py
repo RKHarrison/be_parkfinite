@@ -1,4 +1,4 @@
-from fastapi import Depends, FastAPI, HTTPException
+from fastapi import Depends, FastAPI
 from sqlalchemy.orm import Session
 import uvicorn
 from os import getenv
@@ -38,11 +38,7 @@ def get_campsite_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
 
 @app.get("/campsites/{campsite_id}/reviews", response_model=list[Review])
 def get_reviews_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
-    reviews = read_reviews_by_campsite_id(db, campsite_id)
-    if not reviews:
-        raise HTTPException(status_code=404, detail="404 - Reviews Not Found!")
-    return reviews
-
+    return read_reviews_by_campsite_id(db, campsite_id)
 
 @app.get("/users", response_model=list[User])
 def get_users(db: Session = Depends(get_db)):
