@@ -70,3 +70,14 @@ class Campsite(CampsiteBase):
 
     class ConfigDict: 
         from_attributes = True
+
+class CampsiteDetailed(CampsiteBase):
+    campsite_id: int
+    approved: bool = False
+    facilities: list[Facility] | None = None
+    activities: list[Activity] | None = None
+    opening_month: str | None = None
+    closing_month: str | None = None
+
+    class ConfigDict: 
+        from_attributes = True

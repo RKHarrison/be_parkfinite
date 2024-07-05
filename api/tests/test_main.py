@@ -86,3 +86,22 @@ def test_read_campsites(test_db):
             assert isinstance(detail['campsite_contact_email'], (str, type(None)))
             assert isinstance(detail['campsite_contact_id'], int)
             assert isinstance(detail['campsite_id'], int)
+
+def test_read_campsites_by_campsite_id(test_db):
+    response = client.get("/campsites/1")
+    assert response.status_code == 200
+    campsite = response.json()
+
+    assert campsite['campsite_id'] == 1
+    assert campsite['campsite_name'] == "CAMPSITE A"
+    assert campsite['approved'] == True
+
+    photo = campsite['photos'][0]
+    assert photo['campsite_photo_id'] == 1
+
+    contact = campsite['contact'][0]
+    assert contact['campsite_contact_id'] == 1
+    assert contact['campsite_contact_name'] == "John Doe"
+
+    assert isinstance(campsite['facilities'], list)
+

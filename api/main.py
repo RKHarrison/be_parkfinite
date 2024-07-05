@@ -3,8 +3,8 @@ from sqlalchemy.orm import Session
 import uvicorn
 from os import getenv
 
-from crud.campsite_crud import create_campsite, read_campsites 
-from schemas.campsite_schemas import Campsite, CampsiteCreate
+from crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
+from schemas.campsite_schemas import CampsiteCreate, Campsite, CampsiteDetailed
 from database.database import SessionLocal, engine, Base
 
 Base.metadata.create_all(bind=engine)
@@ -27,7 +27,9 @@ def root():
 def get_campsites(skip: int = 0, limit: int = 30, db: Session = Depends(get_db)):
     return read_campsites(db, skip=skip, limit=limit)
 
-
+@app.get("/campsites/{campsite_id}", response_model=CampsiteDetailed)
+def get_campsite_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
+    return read_campsite_by_id(db, campsite_id)
 
 
 
