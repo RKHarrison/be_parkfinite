@@ -1,3 +1,4 @@
+from fastapi import HTTPException
 from api.models.campsite_models import Campsite
 from schemas.campsite_schemas import CampsiteCreate
 
@@ -18,4 +19,6 @@ def read_campsites(db, skip: int = 0, limit: int = 30):
 
 def read_campsite_by_id(db, id: int):
     campsite = db.get(Campsite, id)
+    if not campsite:
+        raise HTTPException(status_code=404, detail="404 - Campsite Not Found!")
     return campsite
