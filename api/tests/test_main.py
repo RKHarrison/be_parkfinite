@@ -162,3 +162,11 @@ def test_read_reviews_by_different_campsite_id(test_db):
 
     reviews2 = response2.json()
     assert len(reviews2) == 1
+
+def test_404_reviews_not_found(test_db):
+    response = client.get("/campsites/987654321/reviews")
+    assert response.status_code == 404
+
+    error = response.json()
+    assert error["detail"] == "404 - Reviews Not Found!"
+
