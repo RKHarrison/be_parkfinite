@@ -18,3 +18,7 @@ def create_campsite(db: Session, campsite: CampsiteCreate):
 def read_campsites(db: Session, skip: int = 0, limit: int = 30):
     campsites = db.query(Campsite).limit(limit).all()
     return campsites
+
+def read_campsite_by_id(db: Session, id: int):
+    campsite = db.get(Campsite, id)
+    return campsite
