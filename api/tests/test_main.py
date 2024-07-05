@@ -102,3 +102,40 @@ def test_read_campsites_by_campsite_id(test_db):
     contact = campsite['contact'][0]
     assert contact['campsite_contact_id'] == 1
     assert contact['campsite_contact_name'] == "John Doe"
+
+def test_read_users(test_db):
+    response = client.get("/users")
+    assert response.status_code == 200
+
+    users = response.json()
+    print(users, '<<<<<<<<<<<<<<<<<<')
+
+    assert len(users) == 3
+    for user in users:  
+        assert isinstance(user['username'], str)
+        assert isinstance(user['user_password'], str)
+        assert isinstance(user['user_firstname'], str)
+        assert isinstance(user['user_lastname'], str)
+        assert isinstance(user['user_email'], str)
+        assert isinstance(user['xp'], int)
+        assert isinstance(user['user_type'], str)
+        assert isinstance(user['camera_permission'], bool)
+
+    sampleUser = users[0]
+    assert sampleUser['username'] == "NatureExplorer"
+    assert sampleUser['user_password'] == "secure123"
+    assert sampleUser['user_firstname'] == "Alice"
+    assert sampleUser['user_lastname'] == "Wanderlust"
+    assert sampleUser['user_email'] == "alice@example.com"
+    assert sampleUser['xp'] == 500
+    assert sampleUser['user_type'] == "NORMAL"
+    assert sampleUser['camera_permission'] == True
+
+    userDefaults = users[2]
+    assert userDefaults['xp'] == 0
+    assert userDefaults['user_type'] == "NORMAL"
+    assert userDefaults['camera_permission'] == False
+
+
+
+
