@@ -53,6 +53,7 @@ def test_read_main():
     assert response.json() == {"Hello": "World"}
 
 
+
 def test_read_campsites(test_db):
     response = client.get("/campsites")
     assert response.status_code == 200
@@ -86,6 +87,9 @@ def test_read_campsites(test_db):
             assert isinstance(detail['campsite_contact_email'], (str, type(None)))
             assert isinstance(detail['campsite_contact_id'], int)
             assert isinstance(detail['campsite_id'], int)
+
+
+
 
 def test_read_campsites_by_campsite_id(test_db):
     response = client.get("/campsites/1")
@@ -139,3 +143,22 @@ def test_read_users(test_db):
 
 
 
+def test_read_reviews_by_campsite_id(test_db):
+    response = client.get("/campsites/1/reviews")
+    assert response.status_code == 200
+
+    reviews = response.json()
+    assert len(reviews) == 3
+
+    for review in reviews:
+        assert review['campsite_id'] == 1
+        assert isinstance(review['review_id'], int)
+        assert isinstance(review['comment'], (str, type(None)))
+        assert isinstance(review['username'], str)
+
+def test_read_reviews_by_different_campsite_id(test_db):
+    response2 = client.get("/campsites/2/reviews")
+    assert response2.status_code == 200
+
+    reviews2 = response2.json()
+    assert len(reviews2) == 1
