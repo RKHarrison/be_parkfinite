@@ -1,15 +1,23 @@
 from database.database import Base
 from typing import List
-from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey
-from sqlalchemy.orm import relationship
-from sqlalchemy.orm import Mapped, mapped_column 
+from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey, Table
+from sqlalchemy.orm import relationship, Mapped
 
+# from api.models.facility_models import Facility
 
 class CampsiteCategory(Base):
     __tablename__ = "categories"
     category_id = Column(Integer, primary_key=True)
     category_img_url = Column(String)
     category_name = Column(String)
+
+
+campsites_facilities = Table(
+    "campsites_facilities",
+    Base.metadata,
+    Column("campsite_id", ForeignKey("campsites.campsite_id"), primary_key=True),
+    Column("facility_id", ForeignKey("facilities.facility_id"), primary_key=True),
+)
 
 
 class Campsite(Base):
@@ -32,7 +40,14 @@ class Campsite(Base):
 
     contact: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite")
     photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite")
+    facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities)
 
+class Facility(Base):
+    __tablename__ = "facilities"
+
+    facility_id = Column(Integer, primary_key=True)
+    facility_name = Column(String)
+    facility_img_url = Column(String)
 
 class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
