@@ -20,6 +20,8 @@ def util_test_session():
     util_test_session.close()
     Base.metadata.drop_all(util_test_engine)
 
+
+@pytest.mark.db_utils
 class TestSeedDatabaseUtil:
     def test_seed_database_with_empty_data(self, util_test_session):
         empty_data = get_empty_seed_test_data()
