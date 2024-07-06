@@ -34,3 +34,19 @@
 #       use 'pytest -m main' to run main api test suite, for main.py endpoints
 #       use 'pytest -m db_utils' to run database utilities test suite
 #       use 'pytest -m test_utils' to run testing utilities test suite
+#
+#
+#
+# DEVELOPMENT AND PRODUCITON DATABASES:
+# SETUP .ENV FILES LOCALLY:
+# In order to seed either the develeopment or production database you will need to set up .env files locally
+# --PLEASE ADD THESE .ENV FILES TO GIT IGNORE TO KEEP THE DATABASES SECURE!!--
+#       add .env.development. containing the line 'DATABASE_URL=sqlite:///../dev.db'. This will create a local dev db.
+#       add .env.production, containing the line 'DATABASE_URL=postgresql://PATH/TO/PRODUCTION/DB/INCLUDING/PASSWORD/
+#
+# SEED SPECIFIED DATABASE:
+# In your CLI:
+#       run 'ENV=development python3 seed.py':
+#       replace 'development' with 'production' to seed the hosted Postgres production db
+# 
+# NOTE: BOTH DATABASES ARE CURRENTLY SEEDED FROM THE SAME DEVELOPMENT DATA FILE!
