@@ -1,7 +1,7 @@
 import pytest
 from utils.test_utils import is_valid_date
 
-@pytest.mark.is_valid_date
+@pytest.mark.test_utils
 class TestIsValidDateUtil:
 
     def test_empty_input(self):
