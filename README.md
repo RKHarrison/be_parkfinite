@@ -1,13 +1,13 @@
 # BE_PARKFINITE
 ### PLEASE UPDATE THIS README TO REFLECT CURRENT STATE OF PROJECT BEFORE PUSHING TO GIT
-#
+*
 ### PROJECT SETUP:
-# Initiate a virtual environament and reference requirements.txt to install necessary project dependencies:
-# In your CLI 
-#       1/ Create virtual enivorment in the project root folder (/be_parkfinite) - run 'python3 -m venv venv'
-#       2/ Activate your virtual environment - run 'source venv/bin/activate' 
-#       3/ Install project dependencies - run 'pip install -r requirements.txt'
-#
+* Initiate a virtual environament and reference requirements.txt to install necessary project dependencies:
+* In your CLI 
+*       1/ Create virtual enivorment in the project root folder (/be_parkfinite) - run 'python3 -m venv venv'
+*       2/ Activate your virtual environment - run 'source venv/bin/activate' 
+*       3/ Install project dependencies - run 'pip install -r requirements.txt'
+*
 ### RUNNING THE APP:
 * Run the app locally:
 *       run 'uvicorn main:App' to run the app on http://127.0.0.1:8000
