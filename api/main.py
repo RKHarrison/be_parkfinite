@@ -6,19 +6,14 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from database.database import SessionLocal, engine, Base
 from api.crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
-from api.crud.reviews_crud import read_reviews_by_campsite_id
+from api.crud.reviews_crud import create_review_by_campsite_id, read_reviews_by_campsite_id
 from api.crud.user_crud import read_users
 from api.schemas.campsite_schemas import CampsiteCreateRequest, Campsite, CampsiteDetailed
-from api.schemas.review_schemas import Review
+from api.schemas.review_schemas import Review, ReviewCreateRequest
 from api.schemas.user_schemas import User
-from api.errors.error_handling import (
-    validation_exception_handler, 
-    attribute_error_handler, 
-    http_exception_handler, 
-    sqlalchemy_exception_handler
-)
-Base.metadata.create_all(bind=engine)
+from api.errors.error_handling import (validation_exception_handler, attribute_error_handler,  http_exception_handler, sqlalchemy_exception_handler)
 
+Base.metadata.create_all(bind=engine)
 app = FastAPI()
 
 
@@ -42,6 +37,11 @@ def health_check():
 @app.post("/campsites", status_code=201, response_model=CampsiteDetailed)
 def post_campsite(request: CampsiteCreateRequest, db: Session = Depends(get_db)):
     return create_campsite(db=db, request=request)
+
+
+@app.post("/campsites/{campsite_id}/reviews", status_code=201, response_model=Review)
+def post_review_by_campsite_id(campsite_id, request: ReviewCreateRequest, db: Session = Depends(get_db)):
+    return create_review_by_campsite_id(db=db, campsite_id=campsite_id, request=request)
 
 
 @app.get("/campsites", response_model=list[Campsite])
