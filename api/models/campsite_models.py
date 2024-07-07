@@ -1,7 +1,8 @@
-from database.database import Base
 from typing import List
 from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey, Table
 from sqlalchemy.orm import relationship, Mapped
+from database.database import Base
+from api.utils.date_stamp import date_stamp
 
 
 class CampsiteCategory(Base):
@@ -30,8 +31,8 @@ class Campsite(Base):
     opening_month = Column(String)
     closing_month = Column(String)
     description = Column(String)
-    date_added = Column(String)
-    added_by = Column(String)
+    date_added = Column(String, default=date_stamp())
+    added_by = Column(String, ForeignKey("users.username"))
     approved = Column(Boolean, default=False)
 
     category_id = Column(Integer, ForeignKey("categories.category_id"))
