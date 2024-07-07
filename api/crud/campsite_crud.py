@@ -1,8 +1,13 @@
 from fastapi import HTTPException
-from api.models.campsite_models import Campsite, CampsitePhoto, CampsiteContact
+from api.models.campsite_models import Campsite, CampsitePhoto, CampsiteContact, CampsiteCategory
 from schemas.campsite_schemas import CampsiteCreateRequest
 
 def create_campsite(db, request: CampsiteCreateRequest):
+    
+    category = db.query(CampsiteCategory).filter(CampsiteCategory.category_id == request.category_id).first()
+    if not category:
+        raise HTTPException(status_code=422, detail="Category ID does not exist!")
+
     new_campsite = Campsite(
         campsite_name = request.campsite_name,
         campsite_longitude = request.campsite_longitude,
