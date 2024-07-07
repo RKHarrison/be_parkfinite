@@ -11,8 +11,8 @@ from api.data.test_data import get_test_data
 from api.utils.seed_database import seed_database
 from api.utils.test_utils import is_valid_date
 
-import os
-os.environ['ENV'] = 'development'
+from os import environ
+environ['ENV'] = 'development'
 
 client = TestClient(app)
 
