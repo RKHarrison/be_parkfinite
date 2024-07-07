@@ -6,7 +6,7 @@ from api.utils.date_stamp import date_stamp
 class CampsitePhotoBase(BaseModel):
     campsite_photo_url: str
 
-class CampsitePhotoCreate(CampsitePhotoBase):
+class CampsitePhotoCreateRequest(CampsitePhotoBase):
     pass
 
 class CampsitePhoto(CampsitePhotoBase):
@@ -59,7 +59,7 @@ class CampsiteBase(BaseModel):
 class CampsiteCreateRequest(CampsiteBase):
     added_by: str
     category_id: int
-    photos: list[CampsitePhotoCreate] | None = [{"campsite_photo_url": "https://picsum.photos/200"}]
+    photos: list[CampsitePhotoCreateRequest] | None = [{"campsite_photo_url": "https://picsum.photos/200"}]
     contacts: list[CampsiteContactCreateRequest] | None = []
     facilities: list[Facility] | None = None
     activities: list[Activity] | None = None
