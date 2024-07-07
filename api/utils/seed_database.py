@@ -39,6 +39,8 @@ def seed_reviews(session, reviews):
     session.commit()
 
 def seed_database(session, data):
+    if 'user' in data:
+        seed_users(session, data['user'])
     if 'campsite_category' in data:
         seed_categories(session, data['campsite_category'])
     if 'facility' in data:
@@ -51,7 +53,5 @@ def seed_database(session, data):
         seed_photos(session, data['campsite_photo'])
     if 'campsite_contact' in data:
         seed_contacts(session, data['campsite_contact'])
-    if 'user' in data:
-        seed_users(session, data['user'])
     if 'review' in data:
         seed_reviews(session, data['review'])
