@@ -15,19 +15,21 @@ def init_db():
 
 
 def drop_db():
-    engine = create_engine(DATABASE_URL)
     with engine.connect() as connection:
         trans = connection.begin()
         try:
-            connection.execute(text("DROP TABLE IF EXISTS campsites_facilities CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS facilities CASCADE;"))
-            connection.execute(text("DROP TABLE IF EXISTS campsites CASCADE;"))
+            if 'postgresql' in DATABASE_URL:
+                connection.execute(text("DROP TABLE IF EXISTS campsites_facilities CASCADE;"))
+                connection.execute(text("DROP TABLE IF EXISTS facilities CASCADE;"))
+                connection.execute(text("DROP TABLE IF EXISTS campsites CASCADE;"))
+            else:
+                Base.metadata.drop_all(bind=engine)
             trans.commit()
         except Exception as e:
             trans.rollback()
-            print("Error occurred:", e)
-            raise e
+            raise Exception(f"Error occurred during table drop: {e}")
         finally:
-            print("Dropped all tables with CASCADE")
+            db_action = "with CASCADE for PostgreSQL" if 'postgresql' in DATABASE_URL else "using SQLAlchemy's drop_all method"
+            print(f"Dropped all tables {db_action}")
 
     print("Dropped database: ", DATABASE_URL)
