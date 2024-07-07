@@ -1,5 +1,5 @@
 from models.activity_models import Activity
-from models.campsite_models import CampsiteCategory, Campsite, CampsitePhoto, CampsiteContact
+from api.models.campsite_models import CampsiteCategory, Campsite, CampsitePhoto, CampsiteContact
 from models.facility_models import Facility
 from models.review_models import Review
 from models.user_models import User
@@ -75,18 +75,18 @@ def get_dev_data():
             Campsite(campsite_name="Whispering Pines Campsite", category_id=5, campsite_longitude=-1.86520, campsite_latitude=53.35077, parking_cost=14, facilities_cost=26, description="Whispering Pines Campsite is where the pines murmur with the breeze, a place for rest and rejuvenation.", date_added=datetime.now().isoformat(), added_by="Admin", approved=True),
         ],
         'campsite_photo': [
-            CampsitePhoto(campsite_id=1, campsite_photo_url="https://example.com/photo1.jpg"),
-            CampsitePhoto(campsite_id=2, campsite_photo_url="https://example.com/photo2.jpg"),
-            CampsitePhoto(campsite_id=1, campsite_photo_url="https://example.com/photo1_1.jpg"),
-            CampsitePhoto(campsite_id=1, campsite_photo_url="https://example.com/photo1_2.jpg"),
-            CampsitePhoto(campsite_id=1, campsite_photo_url="https://example.com/photo1_3.jpg"),
-            CampsitePhoto(campsite_id=2, campsite_photo_url="https://example.com/photo2_1.jpg"),
-            CampsitePhoto(campsite_id=2, campsite_photo_url="https://example.com/photo2_2.jpg"),
-            CampsitePhoto(campsite_id=2, campsite_photo_url="https://example.com/photo2_3.jpg"),
-            CampsitePhoto(campsite_id=3, campsite_photo_url="https://example.com/photo3_1.jpg"),
-            CampsitePhoto(campsite_id=3, campsite_photo_url="https://example.com/photo3_2.jpg"),
-            CampsitePhoto(campsite_id=3, campsite_photo_url="https://example.com/photo3_3.jpg"),
-            CampsitePhoto(campsite_id=4, campsite_photo_url="https://example.com/photo4_1.jpg"),
+            CampsitePhoto(campsite_id=1, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=2, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=1, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=1, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=1, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=2, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=2, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=2, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=3, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=3, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=3, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(campsite_id=4, campsite_photo_url="https://picsum.photos/200/300"),
         ],
         'campsite_contact': [
             CampsiteContact(campsite_contact_id=1, campsite_id=1, campsite_contact_name="John Doe", campsite_contact_phone="123-456-7890"),
