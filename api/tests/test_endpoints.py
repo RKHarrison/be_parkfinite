@@ -134,7 +134,7 @@ class TestGetReviews:
         assert response.json()["detail"] == "404 - Reviews Not Found!"
 
 
-@pytest.mark.current
+@pytest.mark.main
 class TestPostCampsite:
     def test_basic_campsite_with_category(self, test_db):
         request_body = {
@@ -373,3 +373,24 @@ class TestPostCampsite:
         response = client.post("/campsites", json=request_body)
         assert response.status_code == 422
         assert "contacts" in response.json()['detail'][0]['loc']
+
+
+@pytest.mark.current
+class TestPostReviewByCampsiteId:
+    def test_post_review(self, test_db):
+        request_body = {
+            "rating": 5,
+            "campsite_id": 3,
+            "username": "Admin",
+            "comment": "Really great spot"
+        }
+        response = client.post("/campsites/1/reviews", json=request_body)
+        print(response.json())
+        assert response.status_code == 201
+
+        posted_review = response.json()
+        assert posted_review['review_id'] == 5
+        assert posted_review['rating'] == 5
+        assert posted_review['campsite_id'] == 1
+        assert posted_review['username'] == 'Admin'
+        assert posted_review['comment'] == 'Really great spot'
