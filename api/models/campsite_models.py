@@ -15,8 +15,8 @@ class CampsiteCategory(Base):
 campsites_facilities = Table(
     "campsites_facilities",
     Base.metadata,
-    Column("campsite_id", ForeignKey("campsites.campsite_id"), primary_key=True),
-    Column("facility_id", ForeignKey("facilities.facility_id"), primary_key=True),
+    Column("campsite_id", ForeignKey("campsites.campsite_id", ondelete="CASCADE"), primary_key=True),
+    Column("facility_id", ForeignKey("facilities.facility_id", ondelete="CASCADE"), primary_key=True),
 )
 
 
@@ -38,8 +38,8 @@ class Campsite(Base):
     category_id = Column(Integer, ForeignKey("categories.category_id"))
     category = relationship("CampsiteCategory")
 
-    contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite")
-    photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite")
+    contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite", cascade="all, delete-orphan")
+    photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite", cascade="all, delete-orphan")
     # facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities, cascade="all, delete-orphan")
 
 class CampsiteContact(Base):
