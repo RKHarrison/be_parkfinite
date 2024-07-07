@@ -1,6 +1,6 @@
 from pydantic import BaseModel
-from schemas.facility_schemas import Facility
-from schemas.activity_schemas import Activity
+from api.schemas.facility_schemas import Facility
+from api.schemas.activity_schemas import Activity
 from api.utils.date_stamp import date_stamp
 
 class CampsitePhotoBase(BaseModel):
