@@ -7,8 +7,8 @@ from fastapi.testclient import TestClient
 
 from database.database import Base
 from api.main import app, get_db
-from api.tests.test_data import get_test_data
-from api.utils.database_utils import seed_database
+from api.data.test_data import get_test_data
+from api.utils.seed_database import seed_database
 from api.utils.test_utils import is_valid_date
 
 import os
@@ -54,7 +54,7 @@ class TestServerHealth:
     def test_read_main(self):
         response = client.get("/")
         assert response.status_code == 200
-        assert response.json() == {"Hello": "World"}
+        assert response.json() == {"Server": "Healthy and happy!"}
 
 
 @pytest.mark.main

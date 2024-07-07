@@ -1,6 +1,6 @@
 from database.database import SessionLocal, init_db, drop_db
-from utils.database_utils import seed_database
-from seed.dev_data import get_dev_data
+from api.utils.seed_database import seed_database
+from api.data.dev_data import get_dev_data
 
 dev_data = get_dev_data()
 

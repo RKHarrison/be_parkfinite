@@ -48,8 +48,8 @@ async def attribute_error_handler(request: Request, exc: AttributeError):
     )
 
 @app.get("/")
-def root():
-    return {"Hello": "World"}
+def health_check():
+    return {"Server": "Healthy and happy!"}
 
 @app.post("/campsites", status_code=201, response_model=CampsiteDetailed)
 def post_campsite(request: CampsiteCreateRequest, db: Session = Depends(get_db)):

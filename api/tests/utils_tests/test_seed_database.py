@@ -6,8 +6,8 @@ from api.models.activity_models import Activity
 from api.models.facility_models import Facility
 from api.models.review_models import Review
 from api.models.user_models import User
-from api.utils.database_utils import seed_database
-from api.tests.utils_tests.db_utils_tests.db_utils_test_data import get_empty_seed_test_data, get_single_item_seed_test_data, get_single_model_seed_test_data, get_complex_seed_test_data, get_complete_seed_test_data
+from api.utils.seed_database import seed_database
+from api.data.utils_test_data import get_empty_seed_test_data, get_single_item_seed_test_data, get_single_model_seed_test_data, get_complex_seed_test_data, get_complete_seed_test_data
 
 
 @pytest.fixture(scope="function")
