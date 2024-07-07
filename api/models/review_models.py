@@ -7,5 +7,5 @@ class Review(Base):
     review_id = Column(Integer, primary_key=True)
     rating = Column(Integer)
     comment = Column(String)
-    campsite_id = Column(Integer,ForeignKey("campsites.campsite_id"))
+    campsite_id = Column(Integer,ForeignKey("campsites.campsite_id", ondelete="CASCADE"))
     username = Column(String, ForeignKey("users.username"))

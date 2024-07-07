@@ -12,5 +12,5 @@ class CampsiteActivity(Base):
     __tablename__ = 'campsite_activities'
 
     campsite_activity_id = Column(Integer, primary_key=True)
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-    activity_id = Column(Integer, ForeignKey("activities.activity_id"))
+    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id", ondelete="CASCADE"))
+    activity_id = Column(Integer, ForeignKey("activities.activity_id", ondelete="CASCADE"))

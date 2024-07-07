@@ -1,4 +1,4 @@
-from sqlalchemy import create_engine, MetaData
+from sqlalchemy import create_engine, MetaData, text
 from sqlalchemy.orm import sessionmaker, declarative_base
 from config.config import DATABASE_URL
 
@@ -13,6 +13,21 @@ def init_db():
     Base.metadata.drop_all(bind=engine)
     Base.metadata.create_all(bind=engine)
 
+
 def drop_db():
-    Base.metadata.drop_all(bind=engine)
-    print("dropped database: ", DATABASE_URL )
+    engine = create_engine(DATABASE_URL)
+    with engine.connect() as connection:
+        trans = connection.begin()
+        try:
+            connection.execute(text("DROP TABLE IF EXISTS campsites_facilities CASCADE;"))
+            connection.execute(text("DROP TABLE IF EXISTS facilities CASCADE;"))
+            connection.execute(text("DROP TABLE IF EXISTS campsites CASCADE;"))
+            trans.commit()
+        except Exception as e:
+            trans.rollback()
+            print("Error occurred:", e)
+            raise e
+        finally:
+            print("Dropped all tables with CASCADE")
+
+    print("Dropped database: ", DATABASE_URL)

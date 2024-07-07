@@ -18,4 +18,4 @@ class UserCampsite(Base):
 
     user_campsite_id = Column(Integer, primary_key=True)
     username = Column(String, ForeignKey("users.username"))
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
+    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id", ondelete="CASCADE"))
