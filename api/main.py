@@ -1,4 +1,7 @@
-from fastapi import Depends, FastAPI
+from fastapi import FastAPI, Depends, Request, status
+from fastapi.responses import JSONResponse
+from fastapi.exceptions import RequestValidationError
+from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 import uvicorn
 from os import getenv
@@ -22,6 +25,19 @@ def get_db():
         yield db
     finally: 
         db.close()
+
+
+@app.exception_handler(RequestValidationError)
+async def validation_exception_handler(request: Request, exc: RequestValidationError):
+    errors = exc.errors()
+    body = exc.body
+    print("Validation errors:", errors)
+    print("Request body:", body)
+    return JSONResponse(
+        status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
+        content=jsonable_encoder({"detail": errors, "body": body}),
+    )
+
 
 @app.get("/")
 def root():
