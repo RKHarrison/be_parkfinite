@@ -38,7 +38,7 @@ class Campsite(Base):
     category_id = Column(Integer, ForeignKey("categories.category_id"))
     category = relationship("CampsiteCategory")
 
-    contact: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite")
+    contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite")
     photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite")
     # facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities, cascade="all, delete-orphan")
 
@@ -50,7 +50,7 @@ class CampsiteContact(Base):
     campsite_contact_email = Column(String)
 
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-    campsite: Mapped["Campsite"] = relationship("Campsite", back_populates="contact")
+    campsite: Mapped["Campsite"] = relationship("Campsite", back_populates="contacts")
 
 
 class CampsitePhoto(Base):
