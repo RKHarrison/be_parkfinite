@@ -1,11 +1,12 @@
 from pydantic import BaseModel
 from schemas.facility_schemas import Facility
 from schemas.activity_schemas import Activity
+from api.utils.date_stamp import date_stamp
 
 class CampsitePhotoBase(BaseModel):
     campsite_photo_url: str
 
-class CampsitePhotoCreate(CampsitePhotoBase):
+class CampsitePhotoCreateRequest(CampsitePhotoBase):
     pass
 
 class CampsitePhoto(CampsitePhotoBase):
@@ -18,14 +19,13 @@ class CampsitePhoto(CampsitePhotoBase):
 
 class CampsiteContactBase(BaseModel):
     campsite_contact_name: str
-    campsite_contact_phone: str
-    
-
-class CampsiteContactCreate(CampsiteContactBase):
+    campsite_contact_phone: str    
     campsite_contact_email: str | None = None
+
+class CampsiteContactCreateRequest(CampsiteContactBase):
+    pass
 
 class CampsiteContact(CampsiteContactBase):
-    campsite_contact_email: str | None = None
     campsite_contact_id: int
     campsite_id: int
 
@@ -41,43 +41,49 @@ class CampsiteCategoryCreate(CampsiteCategoryBase):
     pass
 
 class CampsiteCategory(CampsiteCategoryBase):
-    pass
+    category_id: int
 
 
 class CampsiteBase(BaseModel):
     campsite_name: str
-    campsite_id: int
-    date_added: str
-    added_by: str
     campsite_longitude: float
     campsite_latitude: float
-    category: CampsiteCategory
     photos: list[CampsitePhoto] = []
-    contact: list[CampsiteContact] = []
+    contacts: list[CampsiteContact] = []
     parking_cost: float | None = None
     facilities_cost: float | None = None
-    description: str
-
-class CampsiteCreate(CampsiteBase):
-    facilities: list[Facility] | None = None
-    activities: list[Activity] | None = None
+    description: str | None = None
     opening_month: str | None = None
     closing_month: str | None = None
 
+class CampsiteCreateRequest(CampsiteBase):
+    added_by: str
+    category_id: int
+    photos: list[CampsitePhotoCreateRequest] | None = [{"campsite_photo_url": "https://picsum.photos/200"}]
+    contacts: list[CampsiteContactCreateRequest] | None = []
+    facilities: list[Facility] | None = None
+    activities: list[Activity] | None = None
+   
+
 class Campsite(CampsiteBase):
+    added_by: str
     campsite_id: int
+    category: CampsiteCategory | None = None
+    date_added: str | None = None
     approved: bool = False
 
     class ConfigDict: 
         from_attributes = True
 
 class CampsiteDetailed(CampsiteBase):
+    added_by: str
     campsite_id: int
+    category_id: int
+    category: CampsiteCategory | None = None
+    date_added: str
     approved: bool = False
     facilities: list[Facility] | None = None
     activities: list[Activity] | None = None
-    opening_month: str | None = None
-    closing_month: str | None = None
 
     class ConfigDict: 
         from_attributes = True
