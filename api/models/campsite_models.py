@@ -38,6 +38,8 @@ class Campsite(Base):
     category_id = Column(Integer, ForeignKey("categories.category_id"))
     category = relationship("CampsiteCategory")
 
+    reviews = relationship("Review", back_populates="campsite")
+    
     contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite", cascade="all, delete-orphan")
     photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite", cascade="all, delete-orphan")
     # facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities, cascade="all, delete-orphan")
