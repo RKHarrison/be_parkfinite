@@ -1,5 +1,5 @@
 from fastapi import HTTPException
-from api.models.campsite_models import Campsite, CampsitePhoto
+from api.models.campsite_models import Campsite, CampsitePhoto, CampsiteContact
 from schemas.campsite_schemas import CampsiteCreateRequest
 
 def create_campsite(db, request: CampsiteCreateRequest):
@@ -25,6 +25,17 @@ def create_campsite(db, request: CampsiteCreateRequest):
         )
         db.add(db_photo)
     db.commit()
+    
+    for contact_request in request.contacts:
+        new_contact = CampsiteContact(
+            campsite_contact_name=contact_request.campsite_contact_name,
+            campsite_contact_phone=contact_request.campsite_contact_phone,
+            campsite_contact_email=contact_request.campsite_contact_email,
+            campsite_id=new_campsite.campsite_id
+        )
+        db.add(new_contact)
+    db.commit()
+
     return new_campsite
 
 def read_campsites(db, skip: int = 0, limit: int = 30):
