@@ -18,12 +18,12 @@ def create_campsite(db, request: CampsiteCreateRequest):
     db.commit()
     db.refresh(new_campsite)
 
-    for photo in request.photos:
-        db_photo = CampsitePhoto(
-            campsite_photo_url=photo.campsite_photo_url,
+    for photo_request in request.photos:
+        new_photo = CampsitePhoto(
+            campsite_photo_url=photo_request.campsite_photo_url,
             campsite_id=new_campsite.campsite_id
         )
-        db.add(db_photo)
+        db.add(new_photo)
     db.commit()
     
     for contact_request in request.contacts:
