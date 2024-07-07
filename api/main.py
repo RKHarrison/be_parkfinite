@@ -4,7 +4,7 @@ from fastapi.exceptions import RequestValidationError
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
 import uvicorn
-from os import getenv
+import os
 
 from crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
 from api.crud.reviews_crud import read_reviews_by_campsite_id
@@ -31,13 +31,21 @@ def get_db():
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     errors = exc.errors()
     body = exc.body
-    print("Validation errors:", errors)
-    print("Request body:", body)
+    if os.getenv("ENV") == "development":
+        print("Validation errors:", errors)
     return JSONResponse(
         status_code=status.HTTP_422_UNPROCESSABLE_ENTITY,
         content=jsonable_encoder({"detail": errors, "body": body}),
     )
 
+@app.exception_handler(AttributeError)
+async def attribute_error_handler(request: Request, exc: AttributeError):
+    if os.getenv("ENV") == "development":
+        print( f"An attribute error occurred: {str(exc)}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "A server error occured"}
+    )
 
 @app.get("/")
 def root():
