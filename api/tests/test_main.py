@@ -76,14 +76,14 @@ class TestGetCampsites:
             assert isinstance(campsite['facilities_cost'], (float, type(None)))
             assert isinstance(campsite['description'], str)
             assert isinstance(campsite['approved'], bool)
-            assert isinstance(campsite['contact'], list)
+            assert isinstance(campsite['contacts'], list)
 
             for photo in campsite['photos']:
                 assert isinstance(photo['campsite_photo_url'], str)
                 assert isinstance(photo['campsite_photo_id'], int)
                 assert isinstance(photo['campsite_id'], int)
 
-            for detail in campsite['contact']:
+            for detail in campsite['contacts']:
                 assert isinstance(detail['campsite_contact_name'], str)
                 assert isinstance(detail['campsite_contact_phone'], str)
                 assert isinstance(detail['campsite_contact_email'], (str, type(None)))
@@ -165,7 +165,7 @@ class TestPostCampsite:
         assert posted_campsite['closing_month'] == "May"
         assert posted_campsite['photos'] == []
         assert posted_campsite['approved'] == False
-        assert posted_campsite['contact'] == []
+        assert posted_campsite['contacts'] == []
         assert posted_campsite['activities'] is None
         assert posted_campsite['facilities'] is None
         assert posted_campsite['description'] is None
@@ -224,4 +224,58 @@ class TestPostCampsite:
             "campsite_photo_id": 5,
             "campsite_id": 4
             }
+        ]
+
+    def test_campsite_with_contact(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "photos": [],
+            "parking_cost": 10.30,
+            "facilities_cost": 2.50,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            "opening_month": "April",
+            "closing_month": "May",
+            "contacts": [{"campsite_contact_name": "Bobby B", "campsite_contact_phone": "0987654321", "campsite_contact_email": "bobby@contact.com"}]
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 201
+
+        posted_campsite = response.json()
+        assert len(posted_campsite['contacts']) == 1
+        
+        posted_contact=posted_campsite['contacts'][0]
+        assert posted_contact["campsite_id"] == 4
+        assert posted_contact["campsite_contact_id"] == 4
+        assert posted_contact["campsite_contact_name"] == "Bobby B"
+        assert posted_contact["campsite_contact_phone"] == "0987654321"
+        assert posted_contact["campsite_contact_email"] == "bobby@contact.com"
+
+    def test_campsite_multiple_contacts(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "photos": [],
+            "parking_cost": 10.30,
+            "facilities_cost": 2.50,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            "opening_month": "April",
+            "closing_month": "May",
+            "contacts": [
+                {"campsite_contact_name": "Bobby B", "campsite_contact_phone": "0987654321", "campsite_contact_email": "bobby@contact.com"},
+                {"campsite_contact_name": "Cathy C", "campsite_contact_phone": "0987654321", "campsite_contact_email": "cathy@contact.com"}
+                ]
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 201
+
+        posted_campsite = response.json()
+        assert len(posted_campsite['contacts']) == 2
+        assert posted_campsite['contacts'] ==  [
+        {'campsite_contact_email': 'bobby@contact.com','campsite_contact_id': 4,'campsite_contact_name': 'Bobby B','campsite_contact_phone': '0987654321','campsite_id': 4},
+        {'campsite_contact_email': 'cathy@contact.com','campsite_contact_id': 5,'campsite_contact_name': 'Cathy C','campsite_contact_phone': '0987654321','campsite_id': 4}
         ]
