@@ -1,8 +1,9 @@
-from fastapi import FastAPI, Depends, Request, status
+from fastapi import FastAPI, Depends, Request, status, HTTPException
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.encoders import jsonable_encoder
 from sqlalchemy.orm import Session
+from sqlalchemy.exc import SQLAlchemyError
 import uvicorn
 from os import getenv
 
@@ -46,6 +47,26 @@ async def attribute_error_handler(request: Request, exc: AttributeError):
         status_code=500,
         content={"detail": "A server error occured"}
     )
+
+@app.exception_handler(HTTPException)
+async def http_exception_handler(request: Request, exc: HTTPException):
+    if getenv("ENV") == "development":
+        print(f"HTTP exception occurred: {exc.detail}")
+    return JSONResponse(
+        status_code=exc.status_code,
+        content={"detail": exc.detail},
+    )
+
+@app.exception_handler(SQLAlchemyError)
+async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
+    if getenv("ENV") == "development":
+        print(f"Database error occurred: {str(exc)}")
+    return JSONResponse(
+        status_code=500,
+        content={"detail": "A database error occurred"},
+    )
+
+
 
 @app.get("/")
 def health_check():
