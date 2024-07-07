@@ -104,6 +104,7 @@ def get_dev_data():
             CampsiteContact(campsite_contact_id=13, campsite_id=13, campsite_contact_name="Karen Blue", campsite_contact_phone="123-321-4567", campsite_contact_email="karen.blue@example.com")
         ],
         'user': [
+            User(username="Admin", user_password="secure123", user_firstname="All of", user_lastname="Us", user_email="admin@example.com", xp=999, user_type="ADMIN", camera_permission=True),
             User(username="NatureExplorer", user_password="secure123", user_firstname="Alice", user_lastname="Wanderlust", user_email="alice@example.com", xp=500, user_type="NORMAL", camera_permission=True),
             User(username="PeakHiker92", user_password="secure123", user_firstname="Bob", user_lastname="Hills", user_email="bob92@example.com", xp=0, user_type="NORMAL", camera_permission=True),
             User(username="ForestFanatic", user_password="secure123", user_firstname="Clara", user_lastname="Greenwood", user_email="clara.fanatic@example.com", xp=0, user_type="NORMAL", camera_permission=True),
