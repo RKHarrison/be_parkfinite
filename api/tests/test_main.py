@@ -27,7 +27,9 @@ def override_get_db():
     db = TestSession()
     return db
 
+
 app.dependency_overrides[get_db] = override_get_db
+
 
 @pytest.fixture(scope='function')
 def test_db():
@@ -43,12 +45,14 @@ def test_db():
         Base.metadata.drop_all(test_engine)
         test_session.close()
 
+
 @pytest.mark.main
 class TestServerHealth:
     def test_read_main(self):
         response = client.get("/")
         assert response.status_code == 200
         assert response.json() == {"Hello": "World"}
+
 
 @pytest.mark.main
 class TestGetCampsites:
@@ -75,9 +79,9 @@ class TestGetCampsites:
             assert isinstance(campsite['contact'], list)
 
             for photo in campsite['photos']:
-                    assert isinstance(photo['campsite_photo_url'], str)
-                    assert isinstance(photo['campsite_photo_id'], int)
-                    assert isinstance(photo['campsite_id'], int)
+                assert isinstance(photo['campsite_photo_url'], str)
+                assert isinstance(photo['campsite_photo_id'], int)
+                assert isinstance(photo['campsite_id'], int)
 
             for detail in campsite['contact']:
                 assert isinstance(detail['campsite_contact_name'], str)
@@ -85,6 +89,7 @@ class TestGetCampsites:
                 assert isinstance(detail['campsite_contact_email'], (str, type(None)))
                 assert isinstance(detail['campsite_contact_id'], int)
                 assert isinstance(detail['campsite_id'], int)
+
 
 @pytest.mark.main
 class TestGetCampsiteById:
@@ -98,6 +103,7 @@ class TestGetCampsiteById:
         assert response.status_code == 404
         assert response.json()["detail"] == "404 - Campsite Not Found!"
 
+
 @pytest.mark.main
 class TestGetUsers:
     def test_read_users(self, test_db):
@@ -105,6 +111,7 @@ class TestGetUsers:
         assert response.status_code == 200
         users = response.json()
         assert len(users) == 3
+
 
 @pytest.mark.main
 class TestGetReviews:
@@ -122,3 +129,99 @@ class TestGetReviews:
         response = client.get("/campsites/987654321/reviews")
         assert response.status_code == 404
         assert response.json()["detail"] == "404 - Reviews Not Found!"
+
+
+@pytest.mark.current
+class TestPostCampsite:
+    def test_basic_campsite_with_category(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "photos": [],
+            "parking_cost": 10.30,
+            "facilities_cost": 2.50,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            "opening_month": "April",
+            "closing_month": "May"
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 201
+        posted_campsite = response.json()
+
+        assert posted_campsite['campsite_id'] == 4
+        assert is_valid_date(posted_campsite['date_added'])
+        assert posted_campsite['campsite_name'] == "TEST NAME"
+        assert posted_campsite["campsite_longitude"] == 1.23
+        assert posted_campsite["campsite_latitude"] == 4.56
+        assert posted_campsite['parking_cost'] == 10.30
+        assert posted_campsite['facilities_cost'] == 2.50
+        assert posted_campsite['added_by'] == "PeakHiker92"
+        assert posted_campsite['category']['category_id'] == 3
+        assert posted_campsite['category']['category_name'] == "Campsite"
+        assert posted_campsite['category']['category_img_url'] == "https://example.com/category4.jpg"
+        assert posted_campsite['opening_month'] == "April"
+        assert posted_campsite['closing_month'] == "May"
+        assert posted_campsite['photos'] == []
+        assert posted_campsite['approved'] == False
+        assert posted_campsite['contact'] == []
+        assert posted_campsite['activities'] is None
+        assert posted_campsite['facilities'] is None
+        assert posted_campsite['description'] is None
+
+    def test_campsite_with_photo(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "added_by": "PeakHiker92",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "category_id": 3,
+            "photos": [{"campsite_photo_url": "https://testphoto1.com/p1.jpg"}],
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 201
+
+        posted_campsite = response.json()
+        assert len(posted_campsite['photos']) == 1
+
+        posted_photo = posted_campsite['photos'][0]
+        assert posted_photo['campsite_photo_id'] == 3
+        assert posted_photo['campsite_photo_url'] == "https://testphoto1.com/p1.jpg"
+        assert posted_photo['campsite_id'] == posted_campsite['campsite_id']
+
+    def test_campsite_multiple_photos(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "added_by": "PeakHiker92",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "category_id": 3,
+            "photos": [
+                {"campsite_photo_url": "https://testphoto.com/p1.jpg"}, 
+                {"campsite_photo_url": "https://testphoto.com/p2.jpg"}, 
+                {"campsite_photo_url": "https://testphoto.com/p3.jpg"}
+                ]
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 201
+
+        posted_campsite = response.json()
+        assert len(posted_campsite['photos']) == 3
+        assert posted_campsite['photos'] == [
+            {
+            "campsite_photo_url": "https://testphoto.com/p1.jpg",
+            "campsite_photo_id": 3,
+            "campsite_id": 4
+            },
+            {
+            "campsite_photo_url": "https://testphoto.com/p2.jpg",
+            "campsite_photo_id": 4,
+            "campsite_id": 4
+            },
+            {
+            "campsite_photo_url": "https://testphoto.com/p3.jpg",
+            "campsite_photo_id": 5,
+            "campsite_id": 4
+            }
+        ]
