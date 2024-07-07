@@ -11,6 +11,9 @@ from api.tests.test_data import get_test_data
 from api.utils.database_utils import seed_database
 from api.utils.test_utils import is_valid_date
 
+import os
+os.environ['ENV'] = 'development'
+
 client = TestClient(app)
 
 TEST_DB_URL = "sqlite:///"
@@ -245,7 +248,7 @@ class TestPostCampsite:
 
         posted_campsite = response.json()
         assert len(posted_campsite['contacts']) == 1
-        
+
         posted_contact=posted_campsite['contacts'][0]
         assert posted_contact["campsite_id"] == 4
         assert posted_contact["campsite_contact_id"] == 4
@@ -279,3 +282,94 @@ class TestPostCampsite:
         {'campsite_contact_email': 'bobby@contact.com','campsite_contact_id': 4,'campsite_contact_name': 'Bobby B','campsite_contact_phone': '0987654321','campsite_id': 4},
         {'campsite_contact_email': 'cathy@contact.com','campsite_contact_id': 5,'campsite_contact_name': 'Cathy C','campsite_contact_phone': '0987654321','campsite_id': 4}
         ]
+
+    def test_404_category_not_found(self, test_db):
+        request_body = {
+            "category_id": 987654321,
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "photos": []
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        error = response.json()
+        assert error['detail'] == "Category ID does not exist!"
+
+    def test_422_field_missing_from_request_body(self, test_db):
+        request_body = {
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        assert "campsite_name" in response.json()['detail'][0]['loc']
+
+    def test_422_invalid_data_in_basic_campsite_request_body(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": "INVALID",
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "category_id": 3
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        assert "campsite_longitude" in response.json()['detail'][0]['loc']
+    
+    def test_422_invalid_PHOTO_info(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            #PHOTO URL SHOULD BE A STRING!!
+            "photos": [{"campsite_photo_url": 00000000}]
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        assert "campsite_photo_url" in response.json()['detail'][0]['loc']
+
+    def test_invalid_PHOTOS_data_structure(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            "photos": "SHOULD BE A LIST"
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        assert "photos" in response.json()['detail'][0]['loc']
+
+    def test_422_invalid_CONTACT_info(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            #CONTACT NUMBER SHOULD BE A STRING!!
+            "contacts": [{"campsite_contact_name": "Bobby B", "campsite_contact_phone": 000000000000}]
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        assert "campsite_contact_phone" in response.json()['detail'][0]['loc']
+
+    def test_invalid_CONTACTS_data_structure(self, test_db):
+        request_body = {
+            "campsite_name": "TEST NAME",
+            "campsite_longitude": 1.23,
+            "campsite_latitude": 4.56,
+            "added_by": "PeakHiker92",
+            "category_id": 3,
+            "contacts": "SHOULD BE A LIST"
+        }
+        response = client.post("/campsites", json=request_body)
+        assert response.status_code == 422
+        assert "contacts" in response.json()['detail'][0]['loc']
