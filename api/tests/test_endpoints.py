@@ -132,6 +132,31 @@ class TestGetUserByUsername:
         assert error["detail"] == "404 - User Not Found!"
 
 @pytest.mark.main
+class TestGetUserCampsiteFavourites:
+    def test_read_favourites(self, test_db):
+        response = client.get('/users/NatureExplorer/favourites')
+        assert response.status_code == 200
+        favourites = response.json()
+        assert len(favourites) == 2
+        assert favourites[0]['campsite_name'] == 'CAMPSITE A'
+        assert favourites[1]['campsite_name'] == 'CAMPSITE C'
+
+    def test_user_with_no_favourited_campsites(self, test_db):
+        response = client.get('/users/ForestFanatic/favourites')
+        assert response.status_code == 200
+        favourites = response.json()
+        assert len(favourites) == 0
+        assert favourites == []
+
+    def test_404_invalid_user(self, test_db):
+        response = client.get('/users/INVALID/favourites')
+        assert response.status_code == 404
+        error = response.json()
+
+        assert error['detail'] == "404 - User Not Found!"
+
+
+@pytest.mark.main
 class TestGetReviews:
     def test_read_reviews_by_campsite_id(self, test_db):
         response = client.get("/campsites/1/reviews")
