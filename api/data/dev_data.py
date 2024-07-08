@@ -187,7 +187,7 @@ def get_dev_data():
             Review(rating=5, campsite_id=1, username="MeadowSinger",
                    comment="The open spaces are fantastic for stargazing and relaxing."),
 
-            Review(rating=4, campsite_id=2, username="CampfireStoryteller",
+            Review(rating=4, campsite_id=2, username="VigorousCamel",
                    comment="Campfire nights were amazing, but daytime activities lacked variety."),
             Review(rating=5, campsite_id=2, username="TrailBlazer",
                    comment="As a hiker, this place is a dream. Trails for all levels are accessible."),
@@ -232,14 +232,13 @@ def get_dev_data():
                    comment="Returning next year for sure, this has become my favorite spot."),
         ],
         'user_campsite_favourites': [
-            (1, [1, 3, 5, 10, 12, 7, 9, 14, 18, 20]),  # Admin with 10 favourites
-            (2, [2, 4, 3, 5, 10, 19]),
-            (3, [1, 6, 7, 9, 13, 12]),
-            (4, [2, 3, 8, 11, 15]),
-            (5, [1, 4, 5, 14, 16]),
-            (6, [2, 3, 6, 13, 17]),
-            (7, [3, 5, 7, 10, 18]),
-            (8, [1, 2, 8, 12, 19]),
-            (9, [4, 6, 7, 9, 20])
+            ("Admin", [1, 3, 5, 10, 12, 7, 9, 14, 18, 20]),  # Admin with 10 favourites
+            ("VigerousCamel", [2, 4, 3, 5, 10, 19]),
+            ("NatureExplorer", [1, 6, 7, 9, 13, 12]),
+            ("PeakHiker92", [2, 3, 8, 11, 15]),
+            ("ForestFanatic", [1, 4, 5, 14, 16]),
+            ("RiverRaider", [2, 3, 6, 13, 17]),
+            ("TrailBlazer", [3, 5, 7, 10, 18]),
+            ("LakesideLounger", [1, 2, 8, 12, 19])
         ]
     }
