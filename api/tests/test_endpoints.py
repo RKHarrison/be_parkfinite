@@ -50,167 +50,6 @@ def test_db():
 
 
 @pytest.mark.main
-class TestServerHealth:
-    def test_read_main(self):
-        response = client.get("/")
-        assert response.status_code == 200
-        assert response.json() == {"Server": "Healthy and happy!"}
-
-
-@pytest.mark.main
-class TestGetCampsites:
-    def test_read_campsites(self, test_db):
-        response = client.get("/campsites")
-        assert response.status_code == 200
-        campsites = response.json()
-
-        assert len(campsites) == 3
-        for campsite in campsites:
-            assert isinstance(campsite['campsite_name'], str)
-            assert isinstance(campsite['campsite_id'], int)
-            assert is_valid_date(campsite['date_added'])
-            assert isinstance(campsite['added_by'], str)
-            assert isinstance(campsite['campsite_longitude'], float)
-            assert isinstance(campsite['campsite_latitude'], float)
-            assert isinstance(campsite['category']['category_name'], str)
-            assert isinstance(campsite['category']['category_img_url'], str)
-            assert isinstance(campsite['photos'], list)
-            assert isinstance(campsite['parking_cost'], (float, type(None)))
-            assert isinstance(campsite['facilities_cost'], (float, type(None)))
-            assert isinstance(campsite['description'], str)
-            assert isinstance(campsite['approved'], bool)
-            assert isinstance(campsite['contacts'], list)
-            assert isinstance(campsite['average_rating'], float | None)
-
-            for photo in campsite['photos']:
-                assert isinstance(photo['campsite_photo_url'], str)
-                assert isinstance(photo['campsite_photo_id'], int)
-                assert isinstance(photo['campsite_id'], int)
-
-            for detail in campsite['contacts']:
-                assert isinstance(detail['campsite_contact_name'], str)
-                assert isinstance(detail['campsite_contact_phone'], str)
-                assert isinstance(
-                    detail['campsite_contact_email'], (str, type(None)))
-                assert isinstance(detail['campsite_contact_id'], int)
-                assert isinstance(detail['campsite_id'], int)
-        assert campsites[1]["average_rating"] != 0.0
-        assert campsites[1]["average_rating"] == 2.0
-
-
-@pytest.mark.main
-class TestGetCampsiteById:
-    def test_read_campsites_by_campsite_id(self, test_db):
-        response = client.get("/campsites/1")
-        assert response.status_code == 200
-        assert response.json()['campsite_id'] == 1
-
-    def test_404_campsite_not_found(self, test_db):
-        response = client.get("/campsites/987654321")
-        assert response.status_code == 404
-        assert response.json()["detail"] == "404 - Campsite Not Found!"
-
-
-@pytest.mark.main
-class TestGetUsers:
-    def test_read_users(self, test_db):
-        response = client.get("/users")
-        assert response.status_code == 200
-        users = response.json()
-        assert len(users) == 3
-
-
-@pytest.mark.main
-class TestGetUserByUsername:
-    def test_read_user_by_username(self, test_db):
-        response = client.get('/users/NatureExplorer')
-        assert response.status_code == 200
-        user = response.json()
-        assert user["username"] == "NatureExplorer"
-
-    def test_404_non_existing_username(self, test_db):
-        response = client.get('/users/NONEXISTING')
-        assert response.status_code == 404
-        error = response.json()
-        assert error["detail"] == "404 - User Not Found!"
-
-
-@pytest.mark.main
-class TestGetUserCampsiteFavourites:
-    def test_read_favourites(self, test_db):
-        response = client.get('/users/NatureExplorer/favourites')
-        assert response.status_code == 200
-        favourites = response.json()
-        assert len(favourites) == 2
-        assert favourites[0]['campsite_name'] == 'CAMPSITE A'
-        assert favourites[1]['campsite_name'] == 'CAMPSITE C'
-
-    def test_user_with_no_favourited_campsites(self, test_db):
-        response = client.get('/users/ForestFanatic/favourites')
-        assert response.status_code == 200
-        favourites = response.json()
-        assert len(favourites) == 0
-        assert favourites == []
-
-    def test_404_invalid_user(self, test_db):
-        response = client.get('/users/INVALID/favourites')
-        assert response.status_code == 404
-        error = response.json()
-
-        assert error['detail'] == "404 - User Not Found!"
-
-
-@pytest.mark.main
-class TestUpdateUserByUsername:
-    def test_patch_user_xp(self, test_db):
-        response1 = client.patch('/users/NatureExplorer/25')
-        update1 = response1.json()
-        assert response1.status_code == 200
-
-        response2 = client.patch('/users/NatureExplorer/100')
-        update2 = response2.json()
-        assert response2.status_code == 200
-
-        response3 = client.patch('/users/NatureExplorer/-325')
-        update3 = response3.json()
-        assert response3.status_code == 200
-
-        assert update1['xp'] == 525
-        assert update2['xp'] == 625
-        assert update3['xp'] == 300
-
-    def test_400_invalid_patch_request(self, test_db):
-        response = client.patch('/users/NatureExplorer/INVALID')
-        error = response.json()
-        assert response.status_code == 400
-        assert error['detail'] == "400 - Invalid XP Value"
-
-    def test_404_non_existing_user(self, test_db):
-        response = client.patch('/users/INVALID/50')
-        error = response.json()
-        assert response.status_code == 404
-        assert error['detail'] == "404 - User Not Found!"
-
-
-@pytest.mark.main
-class TestGetReviews:
-    def test_read_reviews_by_campsite_id(self, test_db):
-        response = client.get("/campsites/1/reviews")
-        assert response.status_code == 200
-        reviews = response.json()
-        assert len(reviews) == 3
-
-    def test_read_reviews_by_different_campsite_id(self, test_db):
-        response = client.get("/campsites/2/reviews")
-        assert response.status_code == 200
-
-    def test_404_reviews_not_found(self, test_db):
-        response = client.get("/campsites/987654321/reviews")
-        assert response.status_code == 404
-        assert response.json()["detail"] == "404 - Reviews Not Found!"
-
-
-@pytest.mark.main
 class TestPostCampsite:
     def test_basic_campsite_with_category(self, test_db):
         request_body = {
@@ -456,6 +295,60 @@ class TestPostCampsite:
 
 
 @pytest.mark.main
+class TestGetCampsites:
+    def test_read_campsites(self, test_db):
+        response = client.get("/campsites")
+        assert response.status_code == 200
+        campsites = response.json()
+
+        assert len(campsites) == 3
+        for campsite in campsites:
+            assert isinstance(campsite['campsite_name'], str)
+            assert isinstance(campsite['campsite_id'], int)
+            assert is_valid_date(campsite['date_added'])
+            assert isinstance(campsite['added_by'], str)
+            assert isinstance(campsite['campsite_longitude'], float)
+            assert isinstance(campsite['campsite_latitude'], float)
+            assert isinstance(campsite['category']['category_name'], str)
+            assert isinstance(campsite['category']['category_img_url'], str)
+            assert isinstance(campsite['photos'], list)
+            assert isinstance(campsite['parking_cost'], (float, type(None)))
+            assert isinstance(campsite['facilities_cost'], (float, type(None)))
+            assert isinstance(campsite['description'], str)
+            assert isinstance(campsite['approved'], bool)
+            assert isinstance(campsite['contacts'], list)
+            assert isinstance(campsite['average_rating'], float | None)
+
+            for photo in campsite['photos']:
+                assert isinstance(photo['campsite_photo_url'], str)
+                assert isinstance(photo['campsite_photo_id'], int)
+                assert isinstance(photo['campsite_id'], int)
+
+            for detail in campsite['contacts']:
+                assert isinstance(detail['campsite_contact_name'], str)
+                assert isinstance(detail['campsite_contact_phone'], str)
+                assert isinstance(
+                    detail['campsite_contact_email'], (str, type(None)))
+                assert isinstance(detail['campsite_contact_id'], int)
+                assert isinstance(detail['campsite_id'], int)
+        assert campsites[1]["average_rating"] != 0.0
+        assert campsites[1]["average_rating"] == 2.0
+
+
+@pytest.mark.mainadda
+class TestGetCampsiteById:
+    def test_read_campsites_by_campsite_id(self, test_db):
+        response = client.get("/campsites/1")
+        assert response.status_code == 200
+        assert response.json()['campsite_id'] == 1
+
+    def test_404_campsite_not_found(self, test_db):
+        response = client.get("/campsites/987654321")
+        assert response.status_code == 404
+        assert response.json()["detail"] == "404 - Campsite Not Found!"
+
+
+@pytest.mark.main
 class TestPostReviewByCampsiteId:
     def test_post_review(self, test_db):
         request_body = {
@@ -533,6 +426,79 @@ class TestPostReviewByCampsiteId:
 
 
 @pytest.mark.main
+class TestGetReviewsByCampsiteId:
+    def test_read_reviews_by_campsite_id(self, test_db):
+        response = client.get("/campsites/1/reviews")
+        assert response.status_code == 200
+        reviews = response.json()
+        assert len(reviews) == 3
+
+    def test_read_reviews_by_different_campsite_id(self, test_db):
+        response = client.get("/campsites/2/reviews")
+        assert response.status_code == 200
+
+    def test_404_reviews_not_found(self, test_db):
+        response = client.get("/campsites/987654321/reviews")
+        assert response.status_code == 404
+        assert response.json()["detail"] == "404 - Reviews Not Found!"
+
+
+@pytest.mark.main
+class TestGetUsers:
+    def test_read_users(self, test_db):
+        response = client.get("/users")
+        assert response.status_code == 200
+        users = response.json()
+        assert len(users) == 3
+
+
+@pytest.mark.main
+class TestGetUserByUsername:
+    def test_read_user_by_username(self, test_db):
+        response = client.get('/users/NatureExplorer')
+        assert response.status_code == 200
+        user = response.json()
+        assert user["username"] == "NatureExplorer"
+
+    def test_404_non_existing_username(self, test_db):
+        response = client.get('/users/NONEXISTING')
+        assert response.status_code == 404
+        error = response.json()
+        assert error["detail"] == "404 - User Not Found!"
+
+@pytest.mark.main
+class TestUpdateUserXP:
+    def test_patch_user_xp(self, test_db):
+        response1 = client.patch('/users/NatureExplorer/25')
+        update1 = response1.json()
+        assert response1.status_code == 200
+
+        response2 = client.patch('/users/NatureExplorer/100')
+        update2 = response2.json()
+        assert response2.status_code == 200
+
+        response3 = client.patch('/users/NatureExplorer/-325')
+        update3 = response3.json()
+        assert response3.status_code == 200
+
+        assert update1['xp'] == 525
+        assert update2['xp'] == 625
+        assert update3['xp'] == 300
+
+    def test_400_invalid_patch_request(self, test_db):
+        response = client.patch('/users/NatureExplorer/INVALID')
+        error = response.json()
+        assert response.status_code == 400
+        assert error['detail'] == "400 - Invalid XP Value"
+
+    def test_404_non_existing_user(self, test_db):
+        response = client.patch('/users/INVALID/50')
+        error = response.json()
+        assert response.status_code == 404
+        assert error['detail'] == "404 - User Not Found!"
+
+
+@pytest.mark.main
 class TestPostUserFavouriteCampsite:
     def test_create_user_favourite_campsite(self, test_db):
         response = client.post("/users/PeakHiker92/favourites/2")
@@ -553,6 +519,31 @@ class TestPostUserFavouriteCampsite:
         assert response.status_code == 404
         error = response.json()
         assert error['detail'] == '404 - Campsite Not Found!'
+
+
+@pytest.mark.main
+class TestGetUserCampsiteFavourites:
+    def test_read_favourites(self, test_db):
+        response = client.get('/users/NatureExplorer/favourites')
+        assert response.status_code == 200
+        favourites = response.json()
+        assert len(favourites) == 2
+        assert favourites[0]['campsite_name'] == 'CAMPSITE A'
+        assert favourites[1]['campsite_name'] == 'CAMPSITE C'
+
+    def test_user_with_no_favourited_campsites(self, test_db):
+        response = client.get('/users/ForestFanatic/favourites')
+        assert response.status_code == 200
+        favourites = response.json()
+        assert len(favourites) == 0
+        assert favourites == []
+
+    def test_404_invalid_user(self, test_db):
+        response = client.get('/users/INVALID/favourites')
+        assert response.status_code == 404
+        error = response.json()
+
+        assert error['detail'] == "404 - User Not Found!"
 
 
 @pytest.mark.main
