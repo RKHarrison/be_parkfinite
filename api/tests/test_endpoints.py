@@ -466,6 +466,7 @@ class TestGetUserByUsername:
         error = response.json()
         assert error["detail"] == "404 - User Not Found!"
 
+
 @pytest.mark.main
 class TestUpdateUserXP:
     def test_patch_user_xp(self, test_db):
