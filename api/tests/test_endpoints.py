@@ -117,6 +117,19 @@ class TestGetUsers:
         users = response.json()
         assert len(users) == 3
 
+@pytest.mark.main
+class TestGetUserByUsername:
+    def test_read_user_by_username(self, test_db):
+        response = client.get('/users/NatureExplorer')
+        assert response.status_code == 200
+        user = response.json()
+        assert user["username"] == "NatureExplorer"
+
+    def test_404_non_existing_username(self, test_db):
+        response = client.get('/users/NONEXISTING')
+        assert response.status_code == 404
+        error = response.json()
+        assert error["detail"] == "404 - User Not Found!"
 
 @pytest.mark.main
 class TestGetReviews:
