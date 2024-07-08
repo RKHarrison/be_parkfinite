@@ -1,6 +1,8 @@
 from fastapi import HTTPException
 from api.models.campsite_models import Campsite, CampsitePhoto, CampsiteContact, CampsiteCategory
+from api.models.review_models import Review
 from schemas.campsite_schemas import CampsiteCreateRequest
+from utils.update_campsite_average_rating import update_campsite_average_rating
 
 def create_campsite(db, request: CampsiteCreateRequest):
     
@@ -45,10 +47,16 @@ def create_campsite(db, request: CampsiteCreateRequest):
 
 def read_campsites(db, skip: int = 0, limit: int = 30):
     campsites = db.query(Campsite).limit(limit).all()
+    for campsite in campsites:
+        update_campsite_average_rating(db, campsite.campsite_id, Campsite, Review)
+
     return campsites
 
 def read_campsite_by_id(db, id: int):
     campsite = db.get(Campsite, id)
     if not campsite:
         raise HTTPException(status_code=404, detail="404 - Campsite Not Found!")
+    update_campsite_average_rating(db, campsite.campsite_id, Campsite, Review)
     return campsite
+
+
