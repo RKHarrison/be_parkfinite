@@ -1,5 +1,12 @@
 from database.database import Base
-from sqlalchemy import Column, Integer, String, Boolean, ForeignKey
+from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Table
+
+user_campsite_favourites = Table(
+    "user_campsite_favourites",
+    Base.metadata,
+    Column("username", Integer, ForeignKey('users.username', ondelete="CASCADE"), primary_key=True),
+    Column("campsite_id", Integer, ForeignKey("campsites.campsite_id", ondelete="CASCADE"), primary_key=True)
+)
 
 class User(Base):
     __tablename__ = "users"
@@ -13,9 +20,3 @@ class User(Base):
     user_type = Column(String, default="NORMAL")
     camera_permission = Column(Boolean, default=False)
 
-class UserCampsite(Base):
-    __tablename__ = "user_campsites"
-
-    user_campsite_id = Column(Integer, primary_key=True)
-    username = Column(String, ForeignKey("users.username"))
-    campsite_id = Column(Integer, ForeignKey("campsites.campsite_id", ondelete="CASCADE"))
