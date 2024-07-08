@@ -164,7 +164,7 @@ def get_dev_data():
                  user_email="bob92@example.com", xp=0, user_type="NORMAL", camera_permission=True),
             User(username="ForestFanatic", user_password="secure123", user_firstname="Clara", user_lastname="Greenwood",
                  user_email="clara.fanatic@example.com", xp=0, user_type="NORMAL", camera_permission=True),
-            User(username="RiverRaider", user_password="secure123", user_firstname="Dan", user_lastname="Rivers",
+            User(username="VigorousCamel", user_password="secure123", user_firstname="Dan", user_lastname="Rivers",
                  user_email="dan.raider@example.com", xp=0, user_type="NORMAL", camera_permission=True),
             User(username="MeadowSinger", user_password="secure123", user_firstname="Eva", user_lastname="Song",
                  user_email="eva.singer@example.com", xp=0, user_type="NORMAL", camera_permission=True),
@@ -182,7 +182,7 @@ def get_dev_data():
                    comment="Nice area, but quite busy during the weekend. Prefer weekdays for a quieter visit."),
             Review(rating=4, campsite_id=1, username="ForestFanatic",
                    comment="Great escape into nature, though some trails are a bit overused."),
-            Review(rating=2, campsite_id=1, username="RiverRaider",
+            Review(rating=2, campsite_id=1, username="VigorousCamel",
                    comment="Expected more secluded spots along the river, too exposed for my taste."),
             Review(rating=5, campsite_id=1, username="MeadowSinger",
                    comment="The open spaces are fantastic for stargazing and relaxing."),
@@ -200,7 +200,7 @@ def get_dev_data():
 
             Review(rating=5, campsite_id=3, username="ForestFanatic",
                    comment="A forest haven. Quiet, peaceful, and beautifully green."),
-            Review(rating=4, campsite_id=3, username="RiverRaider",
+            Review(rating=4, campsite_id=3, username="VigorousCamel",
                    comment="The river sounds at night are soothing. Good fishing spots nearby."),
             Review(rating=3, campsite_id=3, username="MeadowSinger",
                    comment="Nice area but could use more facilities for families."),
@@ -217,7 +217,7 @@ def get_dev_data():
                    comment="The site is nice but the lack of proper signage made it hard to navigate."),
             Review(rating=4, campsite_id=4, username="ForestFanatic",
                    comment="Perfect for those who want to get away from it all and enjoy the silence."),
-            Review(rating=5, campsite_id=4, username="RiverRaider",
+            Review(rating=5, campsite_id=4, username="VigorousCamel",
                    comment="The proximity to the river makes this campsite a gem for water lovers."),
 
             Review(rating=4, campsite_id=5, username="MeadowSinger",
@@ -233,11 +233,10 @@ def get_dev_data():
         ],
         'user_campsite_favourites': [
             ("Admin", [1, 3, 5, 10, 12, 7, 9, 14, 18, 20]),  # Admin with 10 favourites
-            ("VigerousCamel", [2, 4, 3, 5, 10, 19]),
+            ("VigorousCamel", [2, 4, 3, 5, 10, 19]),
             ("NatureExplorer", [1, 6, 7, 9, 13, 12]),
             ("PeakHiker92", [2, 3, 8, 11, 15]),
             ("ForestFanatic", [1, 4, 5, 14, 16]),
-            ("RiverRaider", [2, 3, 6, 13, 17]),
             ("TrailBlazer", [3, 5, 7, 10, 18]),
             ("LakesideLounger", [1, 2, 8, 12, 19])
         ]

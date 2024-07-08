@@ -19,9 +19,11 @@ def drop_db():
         trans = connection.begin()
         try:
             if 'postgresql' in DATABASE_URL:
+                connection.execute(text("DROP TABLE IF EXISTS user_campsite_favourites CASCADE;"))
                 connection.execute(text("DROP TABLE IF EXISTS campsites_facilities CASCADE;"))
                 connection.execute(text("DROP TABLE IF EXISTS facilities CASCADE;"))
                 connection.execute(text("DROP TABLE IF EXISTS campsites CASCADE;"))
+                connection.execute(text("DROP TABLE IF EXISTS users CASCADE;"))
             else:
                 Base.metadata.drop_all(bind=engine)
             trans.commit()

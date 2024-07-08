@@ -6,7 +6,7 @@ from sqlalchemy.orm import relationship, Mapped
 user_campsite_favourites = Table(
     "user_campsite_favourites",
     Base.metadata,
-    Column("username", Integer, ForeignKey('users.username', ondelete="CASCADE"), primary_key=True),
+    Column("username", String, ForeignKey('users.username', ondelete="CASCADE"), primary_key=True),
     Column("campsite_id", Integer, ForeignKey("campsites.campsite_id", ondelete="CASCADE"), primary_key=True)
 )
 
