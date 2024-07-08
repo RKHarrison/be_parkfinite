@@ -415,7 +415,7 @@ class TestPostCampsite:
         assert "contacts" in response.json()['detail'][0]['loc']
 
 
-@pytest.mark.current
+@pytest.mark.main
 class TestPostReviewByCampsiteId:
     def test_post_review(self, test_db):
         request_body = {
@@ -490,6 +490,28 @@ class TestPostReviewByCampsiteId:
         assert response.status_code == 404
         error = response.json()
         assert error['detail'] == "404 - Campsite Not Found!"
+
+@pytest.mark.current
+class TestPostUserFavouriteCampsite:
+    def test_create_user_favourite_campsite(self, test_db):
+        response = client.post("/users/PeakHiker92/favourites/2")
+        assert response.status_code == 201
+
+    def test_409_user_favourite_campsite_already_exists(self, test_db):
+        response = client.post("/users/NatureExplorer/favourites/1")
+        assert response.status_code == 409
+
+    def test_404_user_not_found(self, test_db):
+        response = client.post("/users/NONEXISTENT/favourites/1")
+        assert response.status_code == 404
+        error =  response.json() 
+        assert error['detail'] == '404 - User Not Found!'
+
+    def test_404_campsite_not_found(self, test_db):
+        response = client.post("/users/PeakHiker92/favourites/987654321")
+        assert response.status_code == 404
+        error =  response.json() 
+        assert error['detail'] == '404 - Campsite Not Found!'
 
 
 @pytest.mark.db_utils

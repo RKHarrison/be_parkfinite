@@ -2,7 +2,7 @@ from fastapi import HTTPException, Request, status
 from fastapi.responses import JSONResponse
 from fastapi.exceptions import RequestValidationError
 from fastapi.encoders import jsonable_encoder
-from sqlalchemy.exc import SQLAlchemyError, OperationalError
+from sqlalchemy.exc import SQLAlchemyError, OperationalError, IntegrityError
 from os import getenv
 
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
@@ -43,6 +43,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
     )
 
 async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
+
     if isinstance(exc.orig, OperationalError):
         if getenv("ENV") == "development":
             print(f"Database error occurred: {str(exc)}")
@@ -50,6 +51,15 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
             status_code=404,
             content={"detail": "Resource not found!"},
         )
+    
+    if isinstance(exc, IntegrityError):
+        if getenv("ENV") == "development":
+            print(f"Database error occurred: {str(exc)}")
+        return JSONResponse(
+            status_code=409,
+            content={"detail": "Resource already exists, unique constraint error"}
+        )
+    
     if getenv("ENV") == "development":
         print(f"Database error occurred: {str(exc)}")
     return JSONResponse(
