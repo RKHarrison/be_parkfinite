@@ -1,4 +1,5 @@
 from pydantic import BaseModel
+from api.schemas.campsite_schemas import Campsite
 
 class UserBase(BaseModel):
     username: str
@@ -10,11 +11,16 @@ class UserBase(BaseModel):
     user_type: str
     camera_permission: bool
 
-class CreateUser(UserBase):
+    class ConfigDict: 
+        from_attributes = True
+
+class CreateUserRequest(UserBase):
     pass    
 
+
 class User(UserBase):
-    pass
+    favourites: list[Campsite] = []
+
 
 
 

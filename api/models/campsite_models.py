@@ -3,6 +3,8 @@ from sqlalchemy import Boolean, Column, Integer, String, Float, ForeignKey, Tabl
 from sqlalchemy.orm import relationship, Mapped
 from database.database import Base
 from api.utils.date_stamp import date_stamp
+from api.models.user_models import user_campsite_favourites
+
 
 
 class CampsiteCategory(Base):
@@ -44,6 +46,8 @@ class Campsite(Base):
     contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite", cascade="all, delete-orphan")
     photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite", cascade="all, delete-orphan")
     # facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities, cascade="all, delete-orphan")
+
+    favourited_by: Mapped[List["User"]] = relationship('User', secondary=user_campsite_favourites, back_populates='favourites')
 
 class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
