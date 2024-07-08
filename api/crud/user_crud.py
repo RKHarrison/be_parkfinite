@@ -12,7 +12,6 @@ def create_user_favourite_campsite(db, username, campsite_id):
     campsite = db.get(Campsite, campsite_id)
     if not campsite:
         raise HTTPException(status_code=404, detail="404 - Campsite Not Found!")
-    print(username, campsite_id)
     if campsite_id not in user.favourites:
         user.favourites.append(campsite)
         db.commit()
@@ -34,3 +33,19 @@ def read_user_campsite_favourites_by_username(db, username: str):
         raise HTTPException(status_code=404, detail="404 - User Not Found!")
     print(user.username)
     return user.favourites
+
+def remove_user_favourite_campsite(db, username, campsite_id):
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="404 - User Not Found!")
+    
+    campsite = db.get(Campsite, campsite_id)
+    if not campsite:
+        raise HTTPException(status_code=404, detail="404 - Campsite Not Found!")
+    
+    if campsite in user.favourites:
+            user.favourites.remove(campsite)
+            db.commit()
+            return {"message": f"Campsite {campsite.campsite_id} removed from favourites."}  
+    else:  
+        raise HTTPException(status_code=404, detail="404 - Campsite Not Found In User Favourites!")
