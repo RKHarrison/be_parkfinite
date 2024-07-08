@@ -37,19 +37,19 @@ def read_reviews_by_campsite_id(db, id: int):
     return reviews
 
 
-def update_review_by_campsite_id(db, campsite_id, review_id: int, request: ReviewUpdateRequest):
+def update_review_by_review_id(db, campsite_id: int, review_id: int, request: ReviewUpdateRequest):
     review = db.get(Review, review_id)
     if not review:
         raise HTTPException(
             status_code=404, detail="404 - Review Not Found!")
-    
+
     campsite = db.get(Campsite, campsite_id)
     if not campsite:
         raise HTTPException(
             status_code=404, detail="404 - Campsite Not Found!")
 
     if request.rating:
-        review.rating = request.rating  
+        review.rating = request.rating
         update_campsite_average_rating(db, campsite_id, Campsite, Review)
         db.commit()
     if request.comment:
@@ -58,4 +58,11 @@ def update_review_by_campsite_id(db, campsite_id, review_id: int, request: Revie
     db.refresh(review)
     return review
 
-    
+
+def remove_review_by_review_id(db, review_id: int):
+    review = db.get(Review, review_id)
+    if not review:
+        raise HTTPException(
+            status_code=404, detail="404 - Review Not Found!")
+    db.delete(review)
+    db.commit()
