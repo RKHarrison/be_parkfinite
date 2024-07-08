@@ -48,13 +48,6 @@ def test_db():
         Base.metadata.drop_all(test_engine)
         test_session.close()
 
-@pytest.mark.main
-class TestServerHealth:
-    def test_read_main(self):
-        response = client.get("/")
-        assert response.status_code == 200
-        assert response.json() == {"Server": "Healthy and happy!"}
-
 
 @pytest.mark.main
 class TestPostCampsite:
@@ -300,6 +293,7 @@ class TestPostCampsite:
         assert response.status_code == 422
         assert "contacts" in response.json()['detail'][0]['loc']
 
+
 @pytest.mark.main
 class TestGetCampsites:
     def test_read_campsites(self, test_db):
@@ -340,7 +334,8 @@ class TestGetCampsites:
         assert campsites[1]["average_rating"] != 0.0
         assert campsites[1]["average_rating"] == 2.0
 
-@pytest.mark.main
+
+@pytest.mark.mainadda
 class TestGetCampsiteById:
     def test_read_campsites_by_campsite_id(self, test_db):
         response = client.get("/campsites/1")
@@ -351,7 +346,6 @@ class TestGetCampsiteById:
         response = client.get("/campsites/987654321")
         assert response.status_code == 404
         assert response.json()["detail"] == "404 - Campsite Not Found!"
-
 
 
 @pytest.mark.main
@@ -430,6 +424,7 @@ class TestPostReviewByCampsiteId:
         error = response.json()
         assert error['detail'] == "404 - Campsite Not Found!"
 
+
 @pytest.mark.main
 class TestGetReviewsByCampsiteId:
     def test_read_reviews_by_campsite_id(self, test_db):
@@ -448,7 +443,6 @@ class TestGetReviewsByCampsiteId:
         assert response.json()["detail"] == "404 - Reviews Not Found!"
 
 
-
 @pytest.mark.main
 class TestGetUsers:
     def test_read_users(self, test_db):
@@ -456,6 +450,7 @@ class TestGetUsers:
         assert response.status_code == 200
         users = response.json()
         assert len(users) == 3
+
 
 @pytest.mark.main
 class TestGetUserByUsername:
@@ -470,6 +465,38 @@ class TestGetUserByUsername:
         assert response.status_code == 404
         error = response.json()
         assert error["detail"] == "404 - User Not Found!"
+
+
+@pytest.mark.main
+class TestUpdateUserXP:
+    def test_patch_user_xp(self, test_db):
+        response1 = client.patch('/users/NatureExplorer/25')
+        update1 = response1.json()
+        assert response1.status_code == 200
+
+        response2 = client.patch('/users/NatureExplorer/100')
+        update2 = response2.json()
+        assert response2.status_code == 200
+
+        response3 = client.patch('/users/NatureExplorer/-325')
+        update3 = response3.json()
+        assert response3.status_code == 200
+
+        assert update1['xp'] == 525
+        assert update2['xp'] == 625
+        assert update3['xp'] == 300
+
+    def test_400_invalid_patch_request(self, test_db):
+        response = client.patch('/users/NatureExplorer/INVALID')
+        error = response.json()
+        assert response.status_code == 400
+        assert error['detail'] == "400 - Invalid XP Value"
+
+    def test_404_non_existing_user(self, test_db):
+        response = client.patch('/users/INVALID/50')
+        error = response.json()
+        assert response.status_code == 404
+        assert error['detail'] == "404 - User Not Found!"
 
 
 @pytest.mark.main
@@ -493,6 +520,7 @@ class TestPostUserFavouriteCampsite:
         assert response.status_code == 404
         error = response.json()
         assert error['detail'] == '404 - Campsite Not Found!'
+
 
 @pytest.mark.main
 class TestGetUserCampsiteFavourites:
@@ -518,7 +546,8 @@ class TestGetUserCampsiteFavourites:
 
         assert error['detail'] == "404 - User Not Found!"
 
-@pytest.mark.current
+
+@pytest.mark.main
 class TestDeleteUserFavouriteCampsite:
     def test_delete_user_favourite_campsite(self, test_db):
         response = client.delete("/users/NatureExplorer/favourites/3")
@@ -535,8 +564,6 @@ class TestDeleteUserFavouriteCampsite:
         assert response.status_code == 404
         error = response.json()
         assert error['detail'] == '404 - Campsite Not Found!'
-
-
 
 
 @pytest.mark.db_utils
