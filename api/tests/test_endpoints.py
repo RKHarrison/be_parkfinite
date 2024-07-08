@@ -443,8 +443,8 @@ class TestGetReviewsByCampsiteId:
         assert response.json()["detail"] == "404 - Reviews Not Found!"
 
 
-@pytest.mark.current
-class TestPatchReviewsByCampsiteId:
+@pytest.mark.main
+class TestPatchReviewsByReviewId:
     def test_patch_review_by_campsite_id(self, test_db):
         request_body = {
             "username": "ForestFanatic",
@@ -516,6 +516,17 @@ class TestPatchReviewsByCampsiteId:
         assert response.status_code == 404
         error = response.json()
         assert error['detail'] == "404 - Campsite Not Found!"
+
+
+@pytest.mark.current
+class TestDeleteReviewsByReviewId:
+    def test_remove_review_by_review_id(self, test_db):
+        response = client.delete("/reviews/4")
+        assert response.status_code == 204
+
+    def test_404_non_existent_review(self, test_db):
+        response = client.delete("/reviews/987654321")
+        assert response.status_code == 404
 
 
 @pytest.mark.main
