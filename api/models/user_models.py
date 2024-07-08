@@ -1,5 +1,7 @@
+from typing import List
 from database.database import Base
 from sqlalchemy import Column, Integer, String, Boolean, ForeignKey, Table
+from sqlalchemy.orm import relationship, Mapped
 
 user_campsite_favourites = Table(
     "user_campsite_favourites",
@@ -19,4 +21,4 @@ class User(Base):
     xp = Column(Integer, default=0)
     user_type = Column(String, default="NORMAL")
     camera_permission = Column(Boolean, default=False)
-
+    favourites: Mapped[List["Campsite"]] = relationship('Campsite', secondary=user_campsite_favourites, back_populates='favourited_by')
