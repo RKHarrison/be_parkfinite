@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from database.database import SessionLocal, engine, Base
 from api.crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
 from api.crud.reviews_crud import create_review_by_campsite_id, read_reviews_by_campsite_id
-from api.crud.user_crud import create_user_favourite_campsite, read_users, read_user_by_username, read_user_campsite_favourites_by_username, remove_user_favourite_campsite
+from api.crud.user_crud import read_users, read_user_by_username, update_user_xp, create_user_favourite_campsite, read_user_campsite_favourites_by_username, remove_user_favourite_campsite
 from api.schemas.campsite_schemas import CampsiteCreateRequest, Campsite, CampsiteDetailed
 from api.schemas.review_schemas import Review, ReviewCreateRequest
 from api.schemas.user_schemas import User
@@ -70,6 +70,11 @@ def get_users(db: Session = Depends(get_db)):
 @app.get("/users/{username}", response_model=User)
 def get_user_by_id(username, db: Session = Depends(get_db)):
     return read_user_by_username(db, username)
+
+@app.patch("/users/{username}/{xp}", response_model=User)
+def patch_user_xp(username: str, xp: str, db: Session = Depends(get_db)):
+    return update_user_xp(db=db, username=username, xp=xp)
+
 
 
 @app.get("/users/{username}/favourites", response_model=list[Campsite])

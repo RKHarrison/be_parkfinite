@@ -15,6 +15,25 @@ def read_user_by_username(db, username):
     return user
 
 
+def update_user_xp(db, username, xp):
+    user = db.get(User, username)
+    if not user:
+        raise HTTPException(status_code=404, detail="404 - User Not Found!")
+
+    try:
+        if xp.startswith('-'):
+            xp_value = -int(xp[1:])
+        else:
+            xp_value = int(xp)
+    except ValueError:
+        raise HTTPException(status_code=400, detail="400 - Invalid XP Value")
+
+    user.xp += xp_value
+    db.commit()
+    db.refresh(user)
+    return user
+
+
 def create_user_favourite_campsite(db, username, campsite_id):
     user = db.query(User).filter(User.username == username).first()
     if not user:
