@@ -58,7 +58,7 @@ def get_test_data():
             Review(rating=5, campsite_id=1, username="PeakHiker92",
                    comment="As a hiker, this place is a dream. Trails for all levels are accessible."),
             Review(rating=5, campsite_id=1, username="ForestFanatic"),
-            Review(rating=2, campsite_id=2, username="ForestFanatic")
+            Review(rating=2, campsite_id=2, username="ForestFanatic", comment="Its ok I guess")
         ],
         'user': [
             User(username="NatureExplorer", user_password="secure123", user_firstname="Alice", user_lastname="Wanderlust",
