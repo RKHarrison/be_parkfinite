@@ -1,3 +1,5 @@
+from api.models.user_models import user_campsite_favourites
+
 def seed_categories(session, categories):
     for category in categories:
         session.add(category)
@@ -38,6 +40,12 @@ def seed_reviews(session, reviews):
         session.add(review)
     session.commit()
 
+def seed_user_campsite_favourites(session, favourites_data, user_campsite_favourites):
+    for username, campsite_ids in favourites_data:
+        for campsite_id in campsite_ids:
+            session.execute(user_campsite_favourites.insert().values(username=username, campsite_id=campsite_id))
+    session.commit()
+
 def seed_database(session, data):
     if 'user' in data:
         seed_users(session, data['user'])
@@ -55,3 +63,6 @@ def seed_database(session, data):
         seed_contacts(session, data['campsite_contact'])
     if 'review' in data:
         seed_reviews(session, data['review'])
+    if 'user_campsite_favourites' in data:
+        seed_user_campsite_favourites(session, data['user_campsite_favourites'], user_campsite_favourites)
+    
