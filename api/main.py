@@ -63,7 +63,7 @@ def get_reviews_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
 
 
 @app.patch("/campsites/{campsite_id}/reviews/{review_id}", status_code=200, response_model=Review)
-def patch_campsite_review_by_review_id(campsite_id, review_id, request: ReviewUpdateRequest, db: Session = Depends(get_db)):
+def patch_review_by_review_id(campsite_id, review_id, request: ReviewUpdateRequest, db: Session = Depends(get_db)):
     return update_review_by_campsite_id(db=db, request=request, campsite_id=campsite_id, review_id=review_id)
 
 
