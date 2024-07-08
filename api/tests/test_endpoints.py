@@ -80,6 +80,7 @@ class TestGetCampsites:
             assert isinstance(campsite['description'], str)
             assert isinstance(campsite['approved'], bool)
             assert isinstance(campsite['contacts'], list)
+            assert isinstance(campsite['average_rating'], float | None)
 
             for photo in campsite['photos']:
                 assert isinstance(photo['campsite_photo_url'], str)
@@ -92,7 +93,8 @@ class TestGetCampsites:
                 assert isinstance(detail['campsite_contact_email'], (str, type(None)))
                 assert isinstance(detail['campsite_contact_id'], int)
                 assert isinstance(detail['campsite_id'], int)
-
+        assert campsites[1]["average_rating"] != 0.0
+        assert campsites[1]["average_rating"] == 2.0
 
 @pytest.mark.main
 class TestGetCampsiteById:
@@ -422,6 +424,7 @@ class TestPostReviewByCampsiteId:
         request_body = {
             "username": "NatureExplorer",
             "comment": "Really great spot"
+
         }
         response = client.post(f"/campsites/3/reviews", json=request_body)
         assert response.status_code == 422
@@ -449,3 +452,28 @@ class TestPostReviewByCampsiteId:
         assert response.status_code == 404
         error = response.json()
         assert error['detail'] == "404 - Campsite Not Found!"
+
+
+@pytest.mark.db_utils
+class TestUpdateCampsiteAverageRatingUtility:
+    def test_updates_average_rating(self, test_db):
+        request_body_1 = {
+            "rating": 1,
+            "campsite_id": 3,
+            "username": "NatureExplorer",
+            "comment": "Really great spot"
+        }
+        request_body_2 = {
+            "rating": 5,
+            "campsite_id": 3,
+            "username": "NatureExplorer",
+            "comment": "Really great spot"
+        }
+
+        response = client.post("/campsites/1/reviews", json=request_body_1)
+        campsite_after_first_review = client.get("campsites/1").json()
+        response = client.post("/campsites/1/reviews", json=request_body_2)
+        campsite_after_second_review = client.get("campsites/1").json()
+
+        assert response.status_code == 201
+        assert campsite_after_first_review['average_rating'] != campsite_after_second_review["average_rating"]
