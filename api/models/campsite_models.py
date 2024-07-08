@@ -6,7 +6,6 @@ from api.utils.date_stamp import date_stamp
 from api.models.user_models import user_campsite_favourites
 
 
-
 class CampsiteCategory(Base):
     __tablename__ = "categories"
     category_id = Column(Integer, primary_key=True)
@@ -17,8 +16,10 @@ class CampsiteCategory(Base):
 campsites_facilities = Table(
     "campsites_facilities",
     Base.metadata,
-    Column("campsite_id", ForeignKey("campsites.campsite_id", ondelete="CASCADE"), primary_key=True),
-    Column("facility_id", ForeignKey("facilities.facility_id", ondelete="CASCADE"), primary_key=True),
+    Column("campsite_id", ForeignKey("campsites.campsite_id",
+           ondelete="CASCADE"), primary_key=True),
+    Column("facility_id", ForeignKey("facilities.facility_id",
+           ondelete="CASCADE"), primary_key=True),
 )
 
 
@@ -42,12 +43,16 @@ class Campsite(Base):
 
     reviews = relationship("Review", back_populates="campsite")
     average_rating = Column(Float, default=0.0)
-    
-    contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite", cascade="all, delete-orphan")
-    photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite", cascade="all, delete-orphan")
+
+    contacts: Mapped[List["CampsiteContact"]] = relationship(
+        "CampsiteContact", back_populates="campsite", cascade="all, delete-orphan")
+    photos: Mapped[List["CampsitePhoto"]] = relationship(
+        "CampsitePhoto", back_populates="campsite", cascade="all, delete-orphan")
     # facilities: Mapped[List["Facility"]] = relationship(secondary=campsites_facilities, cascade="all, delete-orphan")
 
-    favourited_by: Mapped[List["User"]] = relationship('User', secondary=user_campsite_favourites, back_populates='favourites')
+    favourited_by: Mapped[List["User"]] = relationship(
+        'User', secondary=user_campsite_favourites, back_populates='favourites')
+
 
 class CampsiteContact(Base):
     __tablename__ = "campsite_contacts"
@@ -57,7 +62,8 @@ class CampsiteContact(Base):
     campsite_contact_email = Column(String)
 
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-    campsite: Mapped["Campsite"] = relationship("Campsite", back_populates="contacts")
+    campsite: Mapped["Campsite"] = relationship(
+        "Campsite", back_populates="contacts")
 
 
 class CampsitePhoto(Base):
@@ -66,6 +72,5 @@ class CampsitePhoto(Base):
     campsite_photo_url = Column(String)
 
     campsite_id = Column(Integer, ForeignKey("campsites.campsite_id"))
-    campsite: Mapped["Campsite"] = relationship("Campsite", back_populates="photos")
-
-
+    campsite: Mapped["Campsite"] = relationship(
+        "Campsite", back_populates="photos")

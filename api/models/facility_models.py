@@ -4,6 +4,7 @@ from sqlalchemy.orm import relationship, Mapped
 
 from api.models.campsite_models import Campsite
 
+
 class Facility(Base):
     __tablename__ = "facilities"
 

@@ -90,11 +90,13 @@ class TestGetCampsites:
             for detail in campsite['contacts']:
                 assert isinstance(detail['campsite_contact_name'], str)
                 assert isinstance(detail['campsite_contact_phone'], str)
-                assert isinstance(detail['campsite_contact_email'], (str, type(None)))
+                assert isinstance(
+                    detail['campsite_contact_email'], (str, type(None)))
                 assert isinstance(detail['campsite_contact_id'], int)
                 assert isinstance(detail['campsite_id'], int)
         assert campsites[1]["average_rating"] != 0.0
         assert campsites[1]["average_rating"] == 2.0
+
 
 @pytest.mark.main
 class TestGetCampsiteById:
@@ -117,6 +119,7 @@ class TestGetUsers:
         users = response.json()
         assert len(users) == 3
 
+
 @pytest.mark.main
 class TestGetUserByUsername:
     def test_read_user_by_username(self, test_db):
@@ -130,6 +133,7 @@ class TestGetUserByUsername:
         assert response.status_code == 404
         error = response.json()
         assert error["detail"] == "404 - User Not Found!"
+
 
 @pytest.mark.main
 class TestGetUserCampsiteFavourites:
@@ -241,10 +245,10 @@ class TestPostCampsite:
             "campsite_latitude": 4.56,
             "category_id": 3,
             "photos": [
-                {"campsite_photo_url": "https://testphoto.com/p1.jpg"}, 
-                {"campsite_photo_url": "https://testphoto.com/p2.jpg"}, 
+                {"campsite_photo_url": "https://testphoto.com/p1.jpg"},
+                {"campsite_photo_url": "https://testphoto.com/p2.jpg"},
                 {"campsite_photo_url": "https://testphoto.com/p3.jpg"}
-                ]
+            ]
         }
         response = client.post("/campsites", json=request_body)
         assert response.status_code == 201
@@ -253,19 +257,19 @@ class TestPostCampsite:
         assert len(posted_campsite['photos']) == 3
         assert posted_campsite['photos'] == [
             {
-            "campsite_photo_url": "https://testphoto.com/p1.jpg",
-            "campsite_photo_id": 3,
-            "campsite_id": 4
+                "campsite_photo_url": "https://testphoto.com/p1.jpg",
+                "campsite_photo_id": 3,
+                "campsite_id": 4
             },
             {
-            "campsite_photo_url": "https://testphoto.com/p2.jpg",
-            "campsite_photo_id": 4,
-            "campsite_id": 4
+                "campsite_photo_url": "https://testphoto.com/p2.jpg",
+                "campsite_photo_id": 4,
+                "campsite_id": 4
             },
             {
-            "campsite_photo_url": "https://testphoto.com/p3.jpg",
-            "campsite_photo_id": 5,
-            "campsite_id": 4
+                "campsite_photo_url": "https://testphoto.com/p3.jpg",
+                "campsite_photo_id": 5,
+                "campsite_id": 4
             }
         ]
 
@@ -289,7 +293,7 @@ class TestPostCampsite:
         posted_campsite = response.json()
         assert len(posted_campsite['contacts']) == 1
 
-        posted_contact=posted_campsite['contacts'][0]
+        posted_contact = posted_campsite['contacts'][0]
         assert posted_contact["campsite_id"] == 4
         assert posted_contact["campsite_contact_id"] == 4
         assert posted_contact["campsite_contact_name"] == "Bobby B"
@@ -309,18 +313,22 @@ class TestPostCampsite:
             "opening_month": "April",
             "closing_month": "May",
             "contacts": [
-                {"campsite_contact_name": "Bobby B", "campsite_contact_phone": "0987654321", "campsite_contact_email": "bobby@contact.com"},
-                {"campsite_contact_name": "Cathy C", "campsite_contact_phone": "0987654321", "campsite_contact_email": "cathy@contact.com"}
-                ]
+                {"campsite_contact_name": "Bobby B", "campsite_contact_phone": "0987654321",
+                    "campsite_contact_email": "bobby@contact.com"},
+                {"campsite_contact_name": "Cathy C", "campsite_contact_phone": "0987654321",
+                    "campsite_contact_email": "cathy@contact.com"}
+            ]
         }
         response = client.post("/campsites", json=request_body)
         assert response.status_code == 201
 
         posted_campsite = response.json()
         assert len(posted_campsite['contacts']) == 2
-        assert posted_campsite['contacts'] ==  [
-        {'campsite_contact_email': 'bobby@contact.com','campsite_contact_id': 4,'campsite_contact_name': 'Bobby B','campsite_contact_phone': '0987654321','campsite_id': 4},
-        {'campsite_contact_email': 'cathy@contact.com','campsite_contact_id': 5,'campsite_contact_name': 'Cathy C','campsite_contact_phone': '0987654321','campsite_id': 4}
+        assert posted_campsite['contacts'] == [
+            {'campsite_contact_email': 'bobby@contact.com', 'campsite_contact_id': 4,
+                'campsite_contact_name': 'Bobby B', 'campsite_contact_phone': '0987654321', 'campsite_id': 4},
+            {'campsite_contact_email': 'cathy@contact.com', 'campsite_contact_id': 5,
+                'campsite_contact_name': 'Cathy C', 'campsite_contact_phone': '0987654321', 'campsite_id': 4}
         ]
 
     def test_404_category_not_found(self, test_db):
@@ -359,7 +367,7 @@ class TestPostCampsite:
         response = client.post("/campsites", json=request_body)
         assert response.status_code == 422
         assert "campsite_longitude" in response.json()['detail'][0]['loc']
-    
+
     def test_422_invalid_PHOTO_info(self, test_db):
         request_body = {
             "campsite_name": "TEST NAME",
@@ -367,7 +375,7 @@ class TestPostCampsite:
             "campsite_latitude": 4.56,
             "added_by": "PeakHiker92",
             "category_id": 3,
-            #PHOTO URL SHOULD BE A STRING!!
+            # PHOTO URL SHOULD BE A STRING!!
             "photos": [{"campsite_photo_url": 00000000}]
         }
         response = client.post("/campsites", json=request_body)
@@ -394,7 +402,7 @@ class TestPostCampsite:
             "campsite_latitude": 4.56,
             "added_by": "PeakHiker92",
             "category_id": 3,
-            #CONTACT NUMBER SHOULD BE A STRING!!
+            # CONTACT NUMBER SHOULD BE A STRING!!
             "contacts": [{"campsite_contact_name": "Bobby B", "campsite_contact_phone": 000000000000}]
         }
         response = client.post("/campsites", json=request_body)
@@ -467,8 +475,8 @@ class TestPostReviewByCampsiteId:
         response = client.post(f"/campsites/3/reviews", json=request_body)
         assert response.status_code == 422
         error = response.json()
-        assert "rating" in error['detail'][0]['loc'] 
-    
+        assert "rating" in error['detail'][0]['loc']
+
     def test_422_non_existent_username(self, test_db):
         request_body = {
             "rating": 5,
@@ -491,6 +499,7 @@ class TestPostReviewByCampsiteId:
         error = response.json()
         assert error['detail'] == "404 - Campsite Not Found!"
 
+
 @pytest.mark.main
 class TestPostUserFavouriteCampsite:
     def test_create_user_favourite_campsite(self, test_db):
@@ -504,13 +513,13 @@ class TestPostUserFavouriteCampsite:
     def test_404_user_not_found(self, test_db):
         response = client.post("/users/NONEXISTENT/favourites/1")
         assert response.status_code == 404
-        error =  response.json() 
+        error = response.json()
         assert error['detail'] == '404 - User Not Found!'
 
     def test_404_campsite_not_found(self, test_db):
         response = client.post("/users/PeakHiker92/favourites/987654321")
         assert response.status_code == 404
-        error =  response.json() 
+        error = response.json()
         assert error['detail'] == '404 - Campsite Not Found!'
 
 
@@ -523,13 +532,13 @@ class TestDeleteUserFavouriteCampsite:
     def test_404_user_not_found(self, test_db):
         response = client.delete("/users/NONEXISTENT/favourites/1")
         assert response.status_code == 404
-        error =  response.json() 
+        error = response.json()
         assert error['detail'] == '404 - User Not Found!'
 
     def test_404_campsite_not_found(self, test_db):
         response = client.delete("/users/PeakHiker92/favourites/987654321")
         assert response.status_code == 404
-        error =  response.json() 
+        error = response.json()
         assert error['detail'] == '404 - Campsite Not Found!'
 
 
