@@ -335,7 +335,7 @@ class TestGetCampsites:
         assert campsites[1]["average_rating"] == 2.0
 
 
-@pytest.mark.mainadda
+@pytest.mark.main
 class TestGetCampsiteById:
     def test_read_campsites_by_campsite_id(self, test_db):
         response = client.get("/campsites/1")
@@ -441,6 +441,81 @@ class TestGetReviewsByCampsiteId:
         response = client.get("/campsites/987654321/reviews")
         assert response.status_code == 404
         assert response.json()["detail"] == "404 - Reviews Not Found!"
+
+
+@pytest.mark.current
+class TestPatchReviewsByCampsiteId:
+    def test_patch_review_by_campsite_id(self, test_db):
+        request_body = {
+            "username": "ForestFanatic",
+            "rating": 1,
+            "comment": "Actually I changed my mind, its awful!"
+        }
+        response = client.patch("/campsites/2/reviews/4", json=request_body)
+        assert response.status_code == 200
+        review = response.json()
+        assert review['rating'] == 1
+        assert review['comment'] == "Actually I changed my mind, its awful!"
+
+    def test_patch_review_missing_optional_fields(self, test_db):
+        request_body = {
+            "username": "ForestFanatic",
+            "comment": ""
+        }
+        response = client.patch("/campsites/2/reviews/4", json=request_body)
+        assert response.status_code == 200
+        review = response.json()
+        assert review['rating'] == 2
+        assert review['comment'] == "Its ok I guess"
+
+    def test_422_rating_outside_range_1_5(self):
+        request_body = {
+            "username": "ForestFanatic",
+            "rating": 0,
+        }
+        response = client.patch("/campsites/2/reviews/4", json=request_body)
+        assert response.status_code == 422
+        assert "rating" in response.json()['detail'][0]['loc']
+
+    def test_422_comment_outside_range_350_chars(self):
+        request_body = {
+            "username": "ForestFanatic",
+            "comment": "Lorem ipsumor piscing elit. ABCDJSDPellentesque eget commodo orci. Integer varius nibh eu mattis porta. Duis tempus ex sed leo dapibus, sit amet facilisis est tincidunt. Aenean auctor, mauris nec laoreet convallis, urna ex egestas ante, id viverra eros libero at ipsum. Sed finibus libero quam, vel sollicitudin odio volutpat nec. Suspendisse potenti.+1"
+        }
+        response = client.patch("/campsites/2/reviews/4", json=request_body)
+        assert response.status_code == 422
+        error = response.json()
+        assert "comment" in error['detail'][0]['loc']
+        assert error['detail'][0]['msg'] == 'String should have at most 350 characters'
+
+    def test_422_field_missing_from_request_body(self, test_db):
+        request_body = {
+            # NO USERNAME
+        }
+        response = client.patch("/campsites/2/reviews/4", json=request_body)
+        assert response.status_code == 422
+        error = response.json()
+        assert "username" in error['detail'][0]['loc']
+
+    def test_404_review_not_found(self, test_db):
+        request_body = {
+            "username": "ForestFanatic"
+        }
+        response = client.patch(
+            "/campsites/2/reviews/987654321", json=request_body)
+        assert response.status_code == 404
+        error = response.json()
+        assert error['detail'] == "404 - Review Not Found!"
+
+    def test_404_review_not_found(self, test_db):
+        request_body = {
+            "username": "ForestFanatic"
+        }
+        response = client.patch(
+            "/campsites/987654321/reviews/4", json=request_body)
+        assert response.status_code == 404
+        error = response.json()
+        assert error['detail'] == "404 - Campsite Not Found!"
 
 
 @pytest.mark.main
