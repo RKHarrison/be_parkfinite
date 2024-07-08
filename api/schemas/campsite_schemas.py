@@ -71,6 +71,7 @@ class Campsite(CampsiteBase):
     category: CampsiteCategory | None = None
     date_added: str | None = None
     approved: bool = False
+    average_rating: float | None = None
 
     class ConfigDict: 
         from_attributes = True
@@ -84,6 +85,7 @@ class CampsiteDetailed(CampsiteBase):
     approved: bool = False
     facilities: list[Facility] | None = None
     activities: list[Activity] | None = None
+    average_rating: float | None = None
 
     class ConfigDict: 
         from_attributes = True
