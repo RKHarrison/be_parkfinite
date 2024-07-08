@@ -61,9 +61,11 @@ def post_review_by_campsite_id(campsite_id, request: ReviewCreateRequest, db: Se
 def get_reviews_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
     return read_reviews_by_campsite_id(db, campsite_id)
 
+
 @app.patch("/campsites/{campsite_id}/reviews/{review_id}", status_code=200, response_model=Review)
-def patch_review_by_campsite_id(campsite_id, review_id, request: ReviewUpdateRequest, db: Session = Depends(get_db)):
+def patch_review_by_review_id(campsite_id, review_id, request: ReviewUpdateRequest, db: Session = Depends(get_db)):
     return update_review_by_campsite_id(db=db, request=request, campsite_id=campsite_id, review_id=review_id)
+
 
 @app.get("/users", response_model=list[User])
 def get_users(db: Session = Depends(get_db)):
@@ -74,10 +76,10 @@ def get_users(db: Session = Depends(get_db)):
 def get_user_by_id(username, db: Session = Depends(get_db)):
     return read_user_by_username(db, username)
 
+
 @app.patch("/users/{username}/{xp}", response_model=User)
 def patch_user_xp(username: str, xp: str, db: Session = Depends(get_db)):
     return update_user_xp(db=db, username=username, xp=xp)
-
 
 
 @app.get("/users/{username}/favourites", response_model=list[Campsite])
