@@ -4,6 +4,20 @@ from api.models.campsite_models import Campsite
 
 
 
+def create_user_favourite_campsite(db, username, campsite_id):
+    user = db.query(User).filter(User.username == username).first()
+    if not user:
+        raise HTTPException(status_code=404, detail="404 - User Not Found!")
+    
+    campsite = db.get(Campsite, campsite_id)
+    if not campsite:
+        raise HTTPException(status_code=404, detail="404 - Campsite Not Found!")
+    print(username, campsite_id)
+    if campsite_id not in user.favourites:
+        user.favourites.append(campsite)
+        db.commit()
+    return
+
 def read_users(db):
     users = db.query(User).all()
     return users

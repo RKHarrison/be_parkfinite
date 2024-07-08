@@ -7,7 +7,7 @@ from sqlalchemy.orm import Session
 from database.database import SessionLocal, engine, Base
 from api.crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
 from api.crud.reviews_crud import create_review_by_campsite_id, read_reviews_by_campsite_id
-from api.crud.user_crud import read_users, read_user_by_username, read_user_campsite_favourites_by_username
+from api.crud.user_crud import create_user_favourite_campsite, read_users, read_user_by_username, read_user_campsite_favourites_by_username
 from api.schemas.campsite_schemas import CampsiteCreateRequest, Campsite, CampsiteDetailed
 from api.schemas.review_schemas import Review, ReviewCreateRequest
 from api.schemas.user_schemas import User
@@ -42,6 +42,11 @@ def post_campsite(request: CampsiteCreateRequest, db: Session = Depends(get_db))
 @app.post("/campsites/{campsite_id}/reviews", status_code=201, response_model=Review)
 def post_review_by_campsite_id(campsite_id, request: ReviewCreateRequest, db: Session = Depends(get_db)):
     return create_review_by_campsite_id(db=db, campsite_id=campsite_id, request=request)
+
+@app.post("/users/{username}/favourites/{campsite_id}", status_code=201)
+def post_user_favourite_campsite(username, campsite_id, db: Session = Depends(get_db)):
+    return create_user_favourite_campsite(db=db, username=username, campsite_id=campsite_id)
+
 
 
 @app.get("/campsites", response_model=list[Campsite])
