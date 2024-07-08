@@ -39,6 +39,7 @@ class Campsite(Base):
     category = relationship("CampsiteCategory")
 
     reviews = relationship("Review", back_populates="campsite")
+    average_rating = Column(Float, default=0.0)
     
     contacts: Mapped[List["CampsiteContact"]] = relationship("CampsiteContact", back_populates="campsite", cascade="all, delete-orphan")
     photos: Mapped[List["CampsitePhoto"]] = relationship("CampsitePhoto", back_populates="campsite", cascade="all, delete-orphan")
