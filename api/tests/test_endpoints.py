@@ -161,6 +161,38 @@ class TestGetUserCampsiteFavourites:
 
 
 @pytest.mark.main
+class TestUpdateUserByUsername:
+    def test_patch_user_xp(self, test_db):
+        response1 = client.patch('/users/NatureExplorer/25')
+        update1 = response1.json()
+        assert response1.status_code == 200
+
+        response2 = client.patch('/users/NatureExplorer/100')
+        update2 = response2.json()
+        assert response2.status_code == 200
+
+        response3 = client.patch('/users/NatureExplorer/-325')
+        update3 = response3.json()
+        assert response3.status_code == 200
+
+        assert update1['xp'] == 525
+        assert update2['xp'] == 625
+        assert update3['xp'] == 300
+
+    def test_400_invalid_patch_request(self, test_db):
+        response = client.patch('/users/NatureExplorer/INVALID')
+        error = response.json()
+        assert response.status_code == 400
+        assert error['detail'] == "400 - Invalid XP Value"
+
+    def test_404_non_existing_user(self, test_db):
+        response = client.patch('/users/INVALID/50')
+        error = response.json()
+        assert response.status_code == 404
+        assert error['detail'] == "404 - User Not Found!"
+
+
+@pytest.mark.main
 class TestGetReviews:
     def test_read_reviews_by_campsite_id(self, test_db):
         response = client.get("/campsites/1/reviews")
@@ -523,7 +555,7 @@ class TestPostUserFavouriteCampsite:
         assert error['detail'] == '404 - Campsite Not Found!'
 
 
-@pytest.mark.current
+@pytest.mark.main
 class TestDeleteUserFavouriteCampsite:
     def test_delete_user_favourite_campsite(self, test_db):
         response = client.delete("/users/NatureExplorer/favourites/3")
