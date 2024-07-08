@@ -5,6 +5,7 @@ from fastapi.encoders import jsonable_encoder
 from sqlalchemy.exc import SQLAlchemyError, OperationalError, IntegrityError
 from os import getenv
 
+
 async def validation_exception_handler(request: Request, exc: RequestValidationError):
     errors = exc.errors()
     body = exc.body
@@ -12,12 +13,14 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         if error['loc'] == ('body', 'comment') and error['msg'] == 'String should have at most 350 characters':
             return JSONResponse(
                 status_code=422,
-                content={"detail": [{"msg": "String should have at most 350 characters", "loc": error['loc'], "type": error['type']}]},
+                content={"detail": [
+                    {"msg": "String should have at most 350 characters", "loc": error['loc'], "type": error['type']}]},
             )
         if error['loc'] == ('body', 'rating') and error['msg'] == 'Rating should be between 1 and 5':
             return JSONResponse(
                 status_code=422,
-                content={"detail": [{"msg": "Rating should be between 1 and 5", "loc": error['loc'], "type": error['type']}]},
+                content={"detail": [
+                    {"msg": "Rating should be between 1 and 5", "loc": error['loc'], "type": error['type']}]},
             )
     if getenv("ENV") == "development":
         print("Validation errors:", errors)
@@ -26,13 +29,15 @@ async def validation_exception_handler(request: Request, exc: RequestValidationE
         content=jsonable_encoder({"detail": errors, "body": body}),
     )
 
+
 async def attribute_error_handler(request: Request, exc: AttributeError):
     if getenv("ENV") == "development":
-        print( f"An attribute error occurred: {str(exc)}")
+        print(f"An attribute error occurred: {str(exc)}")
     return JSONResponse(
         status_code=500,
         content={"detail": "A server error occured"}
     )
+
 
 async def http_exception_handler(request: Request, exc: HTTPException):
     if getenv("ENV") == "development":
@@ -41,6 +46,7 @@ async def http_exception_handler(request: Request, exc: HTTPException):
         status_code=exc.status_code,
         content={"detail": exc.detail},
     )
+
 
 async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
 
@@ -51,7 +57,7 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
             status_code=404,
             content={"detail": "Resource not found!"},
         )
-    
+
     if isinstance(exc, IntegrityError):
         if getenv("ENV") == "development":
             print(f"Database error occurred: {str(exc)}")
@@ -59,11 +65,10 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
             status_code=409,
             content={"detail": "Resource already exists, unique constraint error"}
         )
-    
+
     if getenv("ENV") == "development":
         print(f"Database error occurred: {str(exc)}")
     return JSONResponse(
         status_code=500,
         content={"detail": "A database error occurred"},
     )
-

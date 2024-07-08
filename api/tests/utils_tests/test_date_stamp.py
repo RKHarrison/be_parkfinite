@@ -2,6 +2,7 @@ import pytest
 from api.utils.date_stamp import date_stamp
 from api.utils.test_utils import is_valid_date
 
+
 @pytest.mark.test_utils
 class TestDateStampUtil:
 
@@ -12,4 +13,4 @@ class TestDateStampUtil:
     def test_date_stamp_updates(self):
         test_stamp1 = date_stamp()
         test_stamp2 = date_stamp()
-        assert test_stamp1 != test_stamp2 
+        assert test_stamp1 != test_stamp2

@@ -1,6 +1,7 @@
 import pytest
 from utils.test_utils import is_valid_date
 
+
 @pytest.mark.test_utils
 class TestIsValidDateUtil:
 
@@ -19,6 +20,3 @@ class TestIsValidDateUtil:
         assert is_valid_date(1.234) == False
         assert is_valid_date({}) == False
         assert is_valid_date(["2024-07-03T13:40:45.657629"]) == False
-        
-
-

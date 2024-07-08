@@ -6,18 +6,13 @@ from api.schemas.review_schemas import ReviewCreateRequest
 from api.utils.update_campsite_average_rating import update_campsite_average_rating
 
 
-def read_reviews_by_campsite_id(db, id: int):
-    reviews = db.query(Review).filter(Review.campsite_id == id).all()
-    if not reviews:
-        raise HTTPException(status_code=404, detail="404 - Reviews Not Found!")
-    return reviews
-
-
 def create_review_by_campsite_id(db, campsite_id: int, request: ReviewCreateRequest):
-    campsite = db.query(Campsite).filter(Campsite.campsite_id == campsite_id).first()
+    campsite = db.query(Campsite).filter(
+        Campsite.campsite_id == campsite_id).first()
     if not campsite:
-        raise HTTPException(status_code=404, detail="404 - Campsite Not Found!")
-    
+        raise HTTPException(
+            status_code=404, detail="404 - Campsite Not Found!")
+
     user = db.query(User).filter(User.username == request.username).first()
     if not user:
         raise HTTPException(status_code=404, detail="404 - User Not Found!")
@@ -31,6 +26,12 @@ def create_review_by_campsite_id(db, campsite_id: int, request: ReviewCreateRequ
     db.add(new_review)
     db.commit()
     db.refresh(new_review)
-
     update_campsite_average_rating(db, campsite_id, Campsite, Review)
     return new_review
+
+
+def read_reviews_by_campsite_id(db, id: int):
+    reviews = db.query(Review).filter(Review.campsite_id == id).all()
+    if not reviews:
+        raise HTTPException(status_code=404, detail="404 - Reviews Not Found!")
+    return reviews

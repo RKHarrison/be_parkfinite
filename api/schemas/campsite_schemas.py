@@ -3,11 +3,14 @@ from api.schemas.facility_schemas import Facility
 from api.schemas.activity_schemas import Activity
 from api.utils.date_stamp import date_stamp
 
+
 class CampsitePhotoBase(BaseModel):
     campsite_photo_url: str
 
+
 class CampsitePhotoCreateRequest(CampsitePhotoBase):
     pass
+
 
 class CampsitePhoto(CampsitePhotoBase):
     campsite_photo_id: int
@@ -19,17 +22,19 @@ class CampsitePhoto(CampsitePhotoBase):
 
 class CampsiteContactBase(BaseModel):
     campsite_contact_name: str
-    campsite_contact_phone: str    
+    campsite_contact_phone: str
     campsite_contact_email: str | None = None
+
 
 class CampsiteContactCreateRequest(CampsiteContactBase):
     pass
+
 
 class CampsiteContact(CampsiteContactBase):
     campsite_contact_id: int
     campsite_id: int
 
-    class ConfigDict: 
+    class ConfigDict:
         from_attributes = True
 
 
@@ -37,8 +42,10 @@ class CampsiteCategoryBase(BaseModel):
     category_name: str
     category_img_url: str
 
+
 class CampsiteCategoryCreate(CampsiteCategoryBase):
     pass
+
 
 class CampsiteCategory(CampsiteCategoryBase):
     category_id: int
@@ -56,14 +63,16 @@ class CampsiteBase(BaseModel):
     opening_month: str | None = None
     closing_month: str | None = None
 
+
 class CampsiteCreateRequest(CampsiteBase):
     added_by: str
     category_id: int
-    photos: list[CampsitePhotoCreateRequest] | None = [{"campsite_photo_url": "https://picsum.photos/200"}]
+    photos: list[CampsitePhotoCreateRequest] | None = [
+        {"campsite_photo_url": "https://picsum.photos/200"}]
     contacts: list[CampsiteContactCreateRequest] | None = []
     facilities: list[Facility] | None = None
     activities: list[Activity] | None = None
-   
+
 
 class Campsite(CampsiteBase):
     added_by: str
@@ -73,8 +82,9 @@ class Campsite(CampsiteBase):
     approved: bool = False
     average_rating: float | None = None
 
-    class ConfigDict: 
+    class ConfigDict:
         from_attributes = True
+
 
 class CampsiteDetailed(CampsiteBase):
     added_by: str
@@ -87,5 +97,5 @@ class CampsiteDetailed(CampsiteBase):
     activities: list[Activity] | None = None
     average_rating: float | None = None
 
-    class ConfigDict: 
+    class ConfigDict:
         from_attributes = True
