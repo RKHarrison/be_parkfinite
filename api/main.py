@@ -6,7 +6,7 @@ from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.orm import Session
 from database.database import SessionLocal, engine, Base
 from api.crud.campsite_crud import create_campsite, read_campsites, read_campsite_by_id
-from api.crud.reviews_crud import create_review_by_campsite_id, read_reviews_by_campsite_id, update_review_by_campsite_id
+from api.crud.reviews_crud import create_review_by_campsite_id, read_reviews_by_campsite_id, update_review_by_review_id, remove_review_by_review_id
 from api.crud.user_crud import read_users, read_user_by_username, update_user_xp, create_user_favourite_campsite, read_user_campsite_favourites_by_username, remove_user_favourite_campsite
 from api.schemas.campsite_schemas import CampsiteCreateRequest, Campsite, CampsiteDetailed
 from api.schemas.review_schemas import ReviewCreateRequest, Review, ReviewUpdateRequest
@@ -64,7 +64,12 @@ def get_reviews_by_campsite_id(campsite_id, db: Session = Depends(get_db)):
 
 @app.patch("/campsites/{campsite_id}/reviews/{review_id}", status_code=200, response_model=Review)
 def patch_review_by_review_id(campsite_id, review_id, request: ReviewUpdateRequest, db: Session = Depends(get_db)):
-    return update_review_by_campsite_id(db=db, request=request, campsite_id=campsite_id, review_id=review_id)
+    return update_review_by_review_id(db=db, request=request, campsite_id=campsite_id, review_id=review_id)
+
+
+@app.delete("/reviews/{review_id}", status_code=204)
+def delete_review_by_review_id(review_id, db: Session = Depends(get_db)):
+    return remove_review_by_review_id(db=db, review_id=review_id)
 
 
 @app.get("/users", response_model=list[User])
