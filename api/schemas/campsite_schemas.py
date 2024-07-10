@@ -55,7 +55,6 @@ class CampsiteBase(BaseModel):
     campsite_name: str
     campsite_longitude: float
     campsite_latitude: float
-    photos: list[CampsitePhoto] = []
     contacts: list[CampsiteContact] = []
     parking_cost: float | None = None
     facilities_cost: float | None = None
@@ -65,16 +64,16 @@ class CampsiteBase(BaseModel):
 
 
 class CampsiteCreateRequest(CampsiteBase):
+    photos: list[CampsitePhotoCreateRequest] | None = []
     added_by: str
     category_id: int
-    photos: list[CampsitePhotoCreateRequest] | None = [
-        {"campsite_photo_url": "https://picsum.photos/200"}]
     contacts: list[CampsiteContactCreateRequest] | None = []
     facilities: list[Facility] | None = None
     activities: list[Activity] | None = None
 
 
 class Campsite(CampsiteBase):
+    photos: list[CampsitePhoto]
     added_by: str
     campsite_id: int
     category: CampsiteCategory | None = None
@@ -87,6 +86,7 @@ class Campsite(CampsiteBase):
 
 
 class CampsiteDetailed(CampsiteBase):
+    photos: list[CampsitePhoto]
     added_by: str
     campsite_id: int
     category_id: int
