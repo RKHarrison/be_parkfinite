@@ -59,11 +59,14 @@ async def sqlalchemy_exception_handler(request: Request, exc: SQLAlchemyError):
         )
 
     if isinstance(exc, IntegrityError):
+        error_detail = "Resource already exists, unique constraint error"
+        if exc.orig and hasattr(exc.orig, 'pgerror') and exc.orig.pgerror:
+            error_detail += f" - Detail: {exc.orig.pgerror}"
         if getenv("ENV") == "development":
-            print(f"Database error occurred: {str(exc)}")
+            print(f"Database error occurred: {str(exc)} - {error_detail}")
         return JSONResponse(
             status_code=409,
-            content={"detail": "Resource already exists, unique constraint error"}
+            content={"detail": error_detail}
         )
 
     if getenv("ENV") == "development":
