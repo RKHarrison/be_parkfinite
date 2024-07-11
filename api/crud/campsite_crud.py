@@ -49,7 +49,7 @@ def create_campsite(db, request: CampsiteCreateRequest):
     return new_campsite
 
 
-def read_campsites(db, skip: int = 0, limit: int = 30):
+def read_campsites(db, skip: int = 0, limit: int = 250):
     campsites = db.query(Campsite).limit(limit).all()
     for campsite in campsites:
         update_campsite_average_rating(

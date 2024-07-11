@@ -43,7 +43,7 @@ def post_campsite(request: CampsiteCreateRequest, db: Session = Depends(get_db))
 
 
 @app.get("/campsites", response_model=list[Campsite])
-def get_campsites(skip: int = 0, limit: int = 100, db: Session = Depends(get_db)):
+def get_campsites(skip: int = 0, limit: int = 250, db: Session = Depends(get_db)):
     return read_campsites(db, skip=skip, limit=limit)
 
 
