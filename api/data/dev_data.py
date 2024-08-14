@@ -273,6 +273,19 @@ def get_dev_data():
                 campsite_id=3, campsite_photo_url="https://picsum.photos/200/300"),
             CampsitePhoto(
                 campsite_id=4, campsite_photo_url="https://picsum.photos/200/300"),
+            CampsitePhoto(
+                campsite_id=45, campsite_photo_url="https://i0.wp.com/handluggageonly.co.uk/wp-content/uploads/2024/01/Best-Things-To-Do-On-The-Isle-Of-Skye-13.jpg?resize=1365%2C2048&ssl=1"),
+            CampsitePhoto(
+                campsite_id=45, campsite_photo_url="https://www.chasingthelongroad.com/wp-content/uploads/2021/03/skye-portree-harbour.jpg.webp"),
+            CampsitePhoto(
+                campsite_id=45, campsite_photo_url="https://d3rf6j5nx5r04a.cloudfront.net/LhP0xps7k82mBKGQQ24CRvJvCqE=/780x0/product/1/7/5890118ca6cb47a6a803f6960751fe18_opt.jpg"),
+            CampsitePhoto(
+                campsite_id=45, campsite_photo_url="https://www.reneeroaming.com/wp-content/uploads/2018/10/Epic-Isle-of-Skye-Photography-Locations-Renee-Roaming-Neist-Point.jpg"),
+            CampsitePhoto(
+                campsite_id=45, campsite_photo_url="https://www.britainexpress.com/scotland/Skye/Gallery/quiraing-03042006-0002.jpg"),
+            CampsitePhoto(
+                campsite_id=45, campsite_photo_url="https://images.unsplash.com/photo-1560090832-c1b9fcb79d21?q=80&w=1065&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"),
+       
         ],
         'campsite_contact': [
             CampsiteContact(campsite_id=1, campsite_contact_name="John Doe",
@@ -293,8 +306,8 @@ def get_dev_data():
                             campsite_contact_phone="666-777-8888", campsite_contact_email="fiona.queen@example.com"),
             CampsiteContact(campsite_id=9, campsite_contact_name="George Knight",
                             campsite_contact_phone="999-000-1111", campsite_contact_email="george.knight@example.com"),
-            CampsiteContact(campsite_id=10, campsite_contact_name="Hannah White",
-                            campsite_contact_phone="222-333-4444", campsite_contact_email="hannah.white@example.com"),
+            CampsiteContact(campsite_id=45, campsite_contact_name="Hannah White",
+                            campsite_contact_phone="+44 1963 822 613", campsite_contact_email="hannah.white@skyefarm.co.uk"),
             CampsiteContact(campsite_id=11, campsite_contact_name="Ivy Green",
                             campsite_contact_phone="555-666-7777", campsite_contact_email="ivy.green@example.com"),
             CampsiteContact(campsite_id=12, campsite_contact_name="Jack Black",
@@ -360,8 +373,8 @@ def get_dev_data():
                    comment="Good, but needs better facilities."),
 
             # Reviews for Campsite 3
-            Review(rating=5, campsite_id=3, username="ForestFanatic",
-                   comment="A forest haven. Quiet, peaceful, and beautifully green."),
+            Review(rating=5, campsite_id=45, username="ForestFanatic",
+                   comment="A clifftop haven. Quiet, peaceful, and beautiful views of the stack. good pub nearby too..."),
             Review(rating=4, campsite_id=3, username="VigorousCamel",
                    comment="The river sounds at night are soothing. Good fishing spots nearby."),
             Review(rating=3, campsite_id=3, username="MeadowSinger",
@@ -372,7 +385,7 @@ def get_dev_data():
                    comment="Good for both short hikes and longer treks. Lots of wildlife to see."),
             Review(rating=3, campsite_id=3, username="Admin",
                    comment="Nice location but a bit noisy."),
-            Review(rating=4, campsite_id=3, username="NatureExplorer",
+            Review(rating=4, campsite_id=45, username="NatureExplorer",
                    comment="Great spot for a weekend getaway."),
             Review(rating=5, campsite_id=3, username="TrailBlazer",
                    comment="Amazing views and excellent facilities."),
@@ -855,7 +868,7 @@ def get_dev_data():
     'user_campsite_favourites': [
         # Admin with 10 favourites
         ("Admin", [1, 3, 5, 10, 12, 7, 9, 14, 18, 20]),
-        ("VigorousCamel", [2, 4, 3, 5, 10, 19]),
+        ("VigorousCamel", [2, 4, 3, 5, 10, 19, 1,6,7,22,23,24,25,56]),
         ("NatureExplorer", [1, 6, 7, 9, 13, 12]),
         ("PeakHiker92", [2, 3, 8, 11, 15]),
         ("ForestFanatic", [1, 4, 5, 14, 16]),
