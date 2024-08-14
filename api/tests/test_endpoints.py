@@ -437,10 +437,11 @@ class TestGetReviewsByCampsiteId:
         response = client.get("/campsites/2/reviews")
         assert response.status_code == 200
 
-    def test_404_reviews_not_found(self, test_db):
+    def test_return_empty_array_if_no_reviews(self, test_db):
         response = client.get("/campsites/987654321/reviews")
-        assert response.status_code == 404
-        assert response.json()["detail"] == "404 - Reviews Not Found!"
+        assert response.status_code == 200
+        reviews = response.json()
+        assert reviews == []
 
 
 @pytest.mark.main
