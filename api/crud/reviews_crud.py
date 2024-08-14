@@ -32,8 +32,6 @@ def create_review_by_campsite_id(db, campsite_id: int, request: ReviewCreateRequ
 
 def read_reviews_by_campsite_id(db, id: int):
     reviews = db.query(Review).filter(Review.campsite_id == id).all()
-    if not reviews:
-        raise HTTPException(status_code=404, detail="404 - Reviews Not Found!")
     return reviews
 
 
